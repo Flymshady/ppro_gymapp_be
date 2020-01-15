@@ -4,12 +4,10 @@ import cz.ppro.gymapp.be.exception.ResourceNotFoundException;
 import cz.ppro.gymapp.be.model.Course;
 import cz.ppro.gymapp.be.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/courses")
@@ -31,6 +29,32 @@ public class CourseController {
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     public Course getById(@PathVariable(value = "id") Long id){
         return courseRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Course", "id", id));
+    }
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public @ResponseBody Course create(@Valid @NonNull @RequestBody Course course){
+        return courseRepository.save(course);
+
+    }
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
+    public void remove(@PathVariable(value = "id") Long id){
+        Course course = courseRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Course", "id", id));
+        courseRepository.delete(course);
+    }
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+    public Course update(@PathVariable(value = "id") Long id,
+                       @Valid @RequestBody Course courseDetails){
+        Course course = courseRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Course", "id", id));
+        course.setName(courseDetails.getName());
+        course.setBeginDate(courseDetails.getBeginDate());
+        course.setCount(courseDetails.getCount());
+        course.setDescription(courseDetails.getDescription());
+        course.setEndDate(courseDetails.getEndDate());
+        course.setMaxCapacity(courseDetails.getMaxCapacity());
+        course.setPrice(courseDetails.getPrice());
+        Course updatedCourse = courseRepository.save(course);
+        return updatedCourse;
     }
 
 }
