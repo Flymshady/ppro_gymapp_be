@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RestController
 public class UserController {
 
@@ -51,7 +51,6 @@ public class UserController {
         user.setEmail(userDetails.getEmail());
         user.setPhoneNumber(userDetails.getPhoneNumber());
         user.setAccounts(userDetails.getAccounts());
-        user.setRole(userDetails.getRole());
         User updatedUser = userRepository.save(user);
         return updatedUser;
     }

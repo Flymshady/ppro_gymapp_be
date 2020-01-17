@@ -1,7 +1,6 @@
 package cz.ppro.gymapp.be.api;
 
 import cz.ppro.gymapp.be.exception.ResourceNotFoundException;
-import cz.ppro.gymapp.be.model.Account;
 import cz.ppro.gymapp.be.model.Ticket;
 import cz.ppro.gymapp.be.repository.AccountRepository;
 import cz.ppro.gymapp.be.repository.TicketRepository;
@@ -30,6 +29,11 @@ public class TicketController {
         return ticketRepository.findAll();
     }
 
+    @RequestMapping(value ="/account/{id}/all", method = RequestMethod.GET)
+    public List<Ticket> getAllByAccount(@PathVariable(value = "id") Long accountId){
+        return ticketRepository.findAllByAccount_Id(accountId);
+    }
+
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     public Ticket getById(@PathVariable(value = "id") Long id){
         return ticketRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Ticket", "id", id));
@@ -56,6 +60,8 @@ public class TicketController {
         ticket.setEndDate(ticketDetails.getEndDate());
         ticket.setName(ticketDetails.getName());
         ticket.setValid(ticketDetails.isValid());
+        ticket.setTicketType(ticketDetails.getTicketType());
+        ticket.setEntrances(ticketDetails.getEntrances());
         Ticket updatedTicket = ticketRepository.save(ticket);
         return updatedTicket;
     }
