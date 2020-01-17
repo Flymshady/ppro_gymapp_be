@@ -24,6 +24,7 @@ public class Entrance {
         this.endDate = endDate;
         this.ticket = ticket;
     }
+    public Entrance(){}
 
     public Long getId() {
         return id;

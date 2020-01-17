@@ -42,6 +42,8 @@ public class Account {
         this.role = role;
     }
 
+    public Account(){}
+
     public List<Course> getSignedCourses() {
         return signedCourses;
     }
