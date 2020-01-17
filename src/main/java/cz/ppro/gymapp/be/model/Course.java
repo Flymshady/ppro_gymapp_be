@@ -25,9 +25,9 @@ public class Course {
     @NotBlank
     private int maxCapacity;
     @ManyToMany(mappedBy = "signedCourses")
-    private List<User> signedClients;
+    private List<Account> signedClients;
     @ManyToOne
-    private User trainer;
+    private Account trainer;
     @NotBlank
     private Date beginDate;
 
@@ -35,7 +35,7 @@ public class Course {
     @NotBlank
     private int count;
 
-    public Course(@NotBlank String name, @NotBlank String description, @NotBlank double price, @NotBlank int maxCapacity, List<User> signedClients, User trainer, @NotBlank Date beginDate, Date endDate, @NotBlank int count) {
+    public Course(@NotBlank String name, @NotBlank String description, @NotBlank double price, @NotBlank int maxCapacity, List<Account> signedClients, Account trainer, @NotBlank Date beginDate, Date endDate, @NotBlank int count) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -85,19 +85,19 @@ public class Course {
         this.maxCapacity = maxCapacity;
     }
 
-    public List<User> getSignedClients() {
+    public List<Account> getSignedClients() {
         return signedClients;
     }
 
-    public void setSignedClients(List<User> signedClients) {
+    public void setSignedClients(List<Account> signedClients) {
         this.signedClients = signedClients;
     }
 
-    public User getTrainer() {
+    public Account getTrainer() {
         return trainer;
     }
 
-    public void setTrainer(User trainer) {
+    public void setTrainer(Account trainer) {
         this.trainer = trainer;
     }
 

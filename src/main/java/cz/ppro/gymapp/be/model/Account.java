@@ -22,12 +22,47 @@ public class Account {
     @Column(name = "person_password")
     @NotBlank
     private String password;
+    @ManyToMany
+    private List<Course> signedCourses;
+    @OneToMany(mappedBy = "trainer")
+    private List<Course> createdCourses;
+    @NotBlank
+    @ManyToOne
+    private Role role;
 
-    public Account(@NotBlank User user, List<Ticket> tickets, @NotBlank String login, @NotBlank String password) {
+
+    public Account(@NotBlank User user, List<Ticket> tickets, @NotBlank String login, @NotBlank String password, List<Course> signedCourses, List<Course> createdCourses, @NotBlank Role role) {
         this.user = user;
         this.tickets = tickets;
         this.login = login;
         this.password = password;
+        this.signedCourses = signedCourses;
+        this.createdCourses = createdCourses;
+        this.role = role;
+    }
+
+    public List<Course> getSignedCourses() {
+        return signedCourses;
+    }
+
+    public void setSignedCourses(List<Course> signedCourses) {
+        this.signedCourses = signedCourses;
+    }
+
+    public List<Course> getCreatedCourses() {
+        return createdCourses;
+    }
+
+    public void setCreatedCourses(List<Course> createdCourses) {
+        this.createdCourses = createdCourses;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getLogin() {

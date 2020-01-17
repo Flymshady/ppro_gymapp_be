@@ -23,25 +23,16 @@ public class User {
     @Column(name = "person_phone_number")
     @NotBlank
     private String phoneNumber;
-    @ManyToMany
-    private List<Course> signedCourses;
-    @OneToMany(mappedBy = "trainer")
-    private List<Course> createdCourses;
-    @NotBlank
-    @ManyToOne
-    private Role role;
     @NotBlank
     @OneToMany(mappedBy = "user")
     private  List<Account> accounts;
 
-    public User(@NotBlank String firstName, @NotBlank String lastName, @NotBlank String email, @NotBlank String phoneNumber, List<Course> signedCourses, List<Course> createdCourses, @NotBlank Role role, @NotBlank List<Account> accounts) {
+
+    public User(@NotBlank String firstName, @NotBlank String lastName, @NotBlank String email, @NotBlank String phoneNumber,  @NotBlank List<Account> accounts) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.signedCourses = signedCourses;
-        this.createdCourses = createdCourses;
-        this.role = role;
         this.accounts = accounts;
     }
 
@@ -92,27 +83,5 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<Course> getSignedCourses() {
-        return signedCourses;
-    }
 
-    public void setSignedCourses(List<Course> signedCourses) {
-        this.signedCourses = signedCourses;
-    }
-
-    public List<Course> getCreatedCourses() {
-        return createdCourses;
-    }
-
-    public void setCreatedCourses(List<Course> createdCourses) {
-        this.createdCourses = createdCourses;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }

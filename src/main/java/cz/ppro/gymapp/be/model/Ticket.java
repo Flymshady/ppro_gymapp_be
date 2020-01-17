@@ -3,6 +3,7 @@ package cz.ppro.gymapp.be.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="ticket")
@@ -20,27 +21,42 @@ public class Ticket {
     @NotBlank
     @Column(name = "ticket_end_date")
     private Date endDate;
-    @NotBlank
-    @Column(name = "ticket_count")
-    private int count;
+
     @Column(name = "ticket_valid")
     @NotBlank
     private boolean valid;
-    @Column(name = "ticket_price")
-    @NotBlank
-    private double price;
     @ManyToOne
     @NotBlank
     private Account account;
+    @OneToMany(mappedBy = "ticket")
+    private List<Entrance> entrances;
+    @ManyToOne
+    private TicketType ticketType;
 
-    public Ticket(@NotBlank String name, @NotBlank Date beginDate, @NotBlank Date endDate, @NotBlank int count, @NotBlank boolean valid, @NotBlank double price, @NotBlank Account account) {
+    public Ticket(@NotBlank String name, @NotBlank Date beginDate, @NotBlank Date endDate, @NotBlank boolean valid, @NotBlank Account account, List<Entrance> entrances, TicketType ticketType) {
         this.name = name;
         this.beginDate = beginDate;
         this.endDate = endDate;
-        this.count = count;
         this.valid = valid;
-        this.price = price;
         this.account = account;
+        this.entrances = entrances;
+        this.ticketType = ticketType;
+    }
+
+    public List<Entrance> getEntrances() {
+        return entrances;
+    }
+
+    public void setEntrances(List<Entrance> entrances) {
+        this.entrances = entrances;
+    }
+
+    public TicketType getTicketType() {
+        return ticketType;
+    }
+
+    public void setTicketType(TicketType ticketType) {
+        this.ticketType = ticketType;
     }
 
     public Ticket(){}
@@ -74,28 +90,12 @@ public class Ticket {
         this.endDate = endDate;
     }
 
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
     public boolean isValid() {
         return valid;
     }
 
     public void setValid(boolean valid) {
         this.valid = valid;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public Account getAccount() {

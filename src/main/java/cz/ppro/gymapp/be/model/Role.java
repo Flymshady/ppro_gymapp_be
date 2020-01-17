@@ -13,34 +13,42 @@ public class Role {
     private Long id;
     @Column(name = "role_name")
     @NotBlank
-    private String name;
+    private RoleType type;
     @OneToMany(mappedBy = "role")
-    private List<User> users;
+    private List<Account> accounts;
 
 
-    public Role(@NotBlank String name, List<User> users) {
-        this.name = name;
-        this.users = users;
+    public Role(@NotBlank RoleType type, List<Account> accounts) {
+        this.type = type;
+        this.accounts = accounts;
     }
 
+    public Role(){}
     public Long getId() {
         return id;
     }
 
 
-    public String getName() {
-        return name;
+    public RoleType getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(RoleType type) {
+        this.type = type;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<Account> getAccounts() {
+        return accounts;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+
+    public enum RoleType {
+        EMPLOYEE,
+        TRAINER,
+        ADMIN,
+        CLIENT
     }
 }
