@@ -30,6 +30,7 @@ public class Entrance {
     }
 
 
+
     public Date getBeginDate() {
         return beginDate;
     }

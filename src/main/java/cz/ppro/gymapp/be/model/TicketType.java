@@ -21,6 +21,7 @@ public class TicketType {
     @Column(name = "ticket_type_entrances_total")
     private int entrancesTotal;
     @OneToMany(mappedBy = "ticketType")
+
     private List<Ticket> tickets;
 
     public TicketType(@NotBlank Type type, @NotBlank double price, @NotBlank int entrancesTotal) {

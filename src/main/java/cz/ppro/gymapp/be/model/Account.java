@@ -26,6 +26,7 @@ public class Account {
     private List<Course> signedCourses;
     @OneToMany(mappedBy = "trainer")
     private List<Course> createdCourses;
+
     @NotBlank
     @ManyToOne
     private Role role;

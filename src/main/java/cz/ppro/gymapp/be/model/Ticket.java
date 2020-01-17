@@ -26,6 +26,7 @@ public class Ticket {
     @NotBlank
     private boolean valid;
     @ManyToOne
+
     @NotBlank
     private Account account;
     @OneToMany(mappedBy = "ticket")
