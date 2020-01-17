@@ -31,16 +31,16 @@ public class Ticket {
     private double price;
     @ManyToOne
     @NotBlank
-    private User user;
+    private Account account;
 
-    public Ticket(@NotBlank String name, @NotBlank Date beginDate, @NotBlank Date endDate, @NotBlank int count, @NotBlank boolean valid, @NotBlank double price, User user) {
+    public Ticket(@NotBlank String name, @NotBlank Date beginDate, @NotBlank Date endDate, @NotBlank int count, @NotBlank boolean valid, @NotBlank double price, @NotBlank Account account) {
         this.name = name;
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.count = count;
         this.valid = valid;
         this.price = price;
-        this.user = user;
+        this.account = account;
     }
 
     public Ticket(){}
@@ -98,11 +98,11 @@ public class Ticket {
         this.price = price;
     }
 
-    public User getUser() {
-        return user;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

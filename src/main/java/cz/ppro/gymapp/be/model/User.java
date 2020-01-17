@@ -27,29 +27,55 @@ public class User {
     private List<Course> signedCourses;
     @OneToMany(mappedBy = "trainer")
     private List<Course> createdCourses;
-    @OneToMany(mappedBy = "user")
-    private List<Ticket> ownedTickets;
     @NotBlank
     @ManyToOne
     private Role role;
+    @NotBlank
+    @OneToOne
+    private Account account;
+    @Column(name = "person_login")
+    @NotBlank
+    private String login;
+    @Column(name = "person_password")
+    @NotBlank
+    private String password;
 
-    public User(@NotBlank String firstName, @NotBlank String lastName, @NotBlank String email, @NotBlank String phoneNumber, List<Course> signedCourses, List<Course> createdCourses, List<Ticket> ownedTickets, @NotBlank Role role) {
+
+    public User(@NotBlank String firstName, @NotBlank String lastName, @NotBlank String email, @NotBlank String phoneNumber, List<Course> signedCourses, List<Course> createdCourses, @NotBlank Role role, @NotBlank Account account, @NotBlank String login, @NotBlank String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.signedCourses = signedCourses;
         this.createdCourses = createdCourses;
-        this.ownedTickets = ownedTickets;
         this.role = role;
+        this.account = account;
+        this.login = login;
+        this.password = password;
     }
 
-    public List<Ticket> getOwnedTickets() {
-        return ownedTickets;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setOwnedTickets(List<Ticket> ownedTickets) {
-        this.ownedTickets = ownedTickets;
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public User(){}
