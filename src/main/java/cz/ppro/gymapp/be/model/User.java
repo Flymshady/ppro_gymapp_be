@@ -31,17 +31,10 @@ public class User {
     @ManyToOne
     private Role role;
     @NotBlank
-    @OneToOne
-    private Account account;
-    @Column(name = "person_login")
-    @NotBlank
-    private String login;
-    @Column(name = "person_password")
-    @NotBlank
-    private String password;
+    @OneToMany(mappedBy = "user")
+    private  List<Account> accounts;
 
-
-    public User(@NotBlank String firstName, @NotBlank String lastName, @NotBlank String email, @NotBlank String phoneNumber, List<Course> signedCourses, List<Course> createdCourses, @NotBlank Role role, @NotBlank Account account, @NotBlank String login, @NotBlank String password) {
+    public User(@NotBlank String firstName, @NotBlank String lastName, @NotBlank String email, @NotBlank String phoneNumber, List<Course> signedCourses, List<Course> createdCourses, @NotBlank Role role, @NotBlank List<Account> accounts) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -49,33 +42,15 @@ public class User {
         this.signedCourses = signedCourses;
         this.createdCourses = createdCourses;
         this.role = role;
-        this.account = account;
-        this.login = login;
-        this.password = password;
+        this.accounts = accounts;
     }
 
-    public Account getAccount() {
-        return account;
+    public List<Account> getAccounts() {
+        return accounts;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 
     public User(){}

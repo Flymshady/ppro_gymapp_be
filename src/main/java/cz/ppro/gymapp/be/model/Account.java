@@ -16,22 +16,34 @@ public class Account {
     private User user;
     @OneToMany(mappedBy = "account")
     private List<Ticket> tickets;
-    @Column(name = "type")
+    @Column(name = "person_login")
     @NotBlank
-    private String type;
+    private String login;
+    @Column(name = "person_password")
+    @NotBlank
+    private String password;
 
-    public Account(@NotBlank User user, List<Ticket> tickets, @NotBlank String type) {
+    public Account(@NotBlank User user, List<Ticket> tickets, @NotBlank String login, @NotBlank String password) {
         this.user = user;
         this.tickets = tickets;
-        this.type = type;
+        this.login = login;
+        this.password = password;
     }
 
-    public String getType() {
-        return type;
+    public String getLogin() {
+        return login;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public User getUser() {
