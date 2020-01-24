@@ -1,4 +1,4 @@
-package cz.ppro.gymapp.be.config;
+package cz.ppro.gymapp.be.authentication;
 
 import cz.ppro.gymapp.be.repository.AccountRepository;
 import cz.ppro.gymapp.be.service.CustomUserDetailService;
