@@ -2,12 +2,16 @@ package cz.ppro.gymapp.be.api;
 
 import cz.ppro.gymapp.be.exception.ResourceNotFoundException;
 import cz.ppro.gymapp.be.model.Account;
+import cz.ppro.gymapp.be.model.Role;
 import cz.ppro.gymapp.be.repository.AccountRepository;
+import cz.ppro.gymapp.be.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/accounts")
@@ -15,10 +19,14 @@ import java.util.List;
 public class AccountController {
 
     private AccountRepository accountRepository;
+    private PasswordEncoder passwordEncoder;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public AccountController(AccountRepository accountRepository){
+    public AccountController(AccountRepository accountRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository){
         this.accountRepository=accountRepository;
+        this.passwordEncoder=passwordEncoder;
+        this.roleRepository=roleRepository;
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
@@ -33,18 +41,40 @@ public class AccountController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody
     Account create(@Valid @NonNull @RequestBody Account account){
+
+        String password = passwordEncoder.encode(account.getPassword());
+        account.setPassword(password);
+        Role userRole = roleRepository.findByName("client");
+        account.setRole(userRole);
+        if(accountRepository.findByLogin(account.getLogin()).isPresent()){
+            return null;
+        }
         return accountRepository.save(account);
 
     }
     @RequestMapping(value = "/create/admin", method = RequestMethod.POST)
     public @ResponseBody
     Account createAdmin(@Valid @NonNull @RequestBody Account account){
+        String password = passwordEncoder.encode(account.getPassword());
+        account.setPassword(password);
+        Role userRole = roleRepository.findByName("Admin");
+        account.setRole(userRole);
+        if(accountRepository.findByLogin(account.getLogin()).isPresent()){
+            return null;
+        }
         return accountRepository.save(account);
 
     }
     @RequestMapping(value = "/create/employee", method = RequestMethod.POST)
     public @ResponseBody
     Account createEmployee(@Valid @NonNull @RequestBody Account account){
+        String password = passwordEncoder.encode(account.getPassword());
+        account.setPassword(password);
+        Role userRole = roleRepository.findByName("Employee");
+        account.setRole(userRole);
+        if(accountRepository.findByLogin(account.getLogin()).isPresent()){
+            return null;
+        }
         return accountRepository.save(account);
     }
 
