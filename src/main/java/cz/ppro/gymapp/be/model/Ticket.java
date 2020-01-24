@@ -31,6 +31,7 @@ public class Ticket {
     @ManyToOne
 
     //TODO pridat notblank anot - pryc z duvodu testovani
+    // fly je burtik
     @JsonIgnore
     private Account account;
 
