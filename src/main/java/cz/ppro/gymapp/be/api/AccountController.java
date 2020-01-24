@@ -36,6 +36,18 @@ public class AccountController {
         return accountRepository.save(account);
 
     }
+    @RequestMapping(value = "/create/admin", method = RequestMethod.POST)
+    public @ResponseBody
+    Account createAdmin(@Valid @NonNull @RequestBody Account account){
+        return accountRepository.save(account);
+
+    }
+    @RequestMapping(value = "/create/employee", method = RequestMethod.POST)
+    public @ResponseBody
+    Account createEmployee(@Valid @NonNull @RequestBody Account account){
+        return accountRepository.save(account);
+    }
+
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
     public void remove(@PathVariable(value = "id") Long id){
         Account account = accountRepository.findById(id)
@@ -47,10 +59,16 @@ public class AccountController {
                          @Valid @RequestBody Account accountDetails){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
-        account.setUser(accountDetails.getUser());
+
         account.setTickets(accountDetails.getTickets());
         account.setLogin(accountDetails.getLogin());
         account.setPassword(accountDetails.getPassword());
+        account.setEmail(accountDetails.getEmail());
+        account.setPhoneNumber(accountDetails.getPhoneNumber());
+        account.setFirstName(accountDetails.getFirstName());
+        account.setLastName(accountDetails.getLastName());
+        account.setCreatedCourses(accountDetails.getCreatedCourses());
+        account.setSignedCourses(accountDetails.getSignedCourses());
         Account updatedAccount = accountRepository.save(account);
         return updatedAccount;
     }

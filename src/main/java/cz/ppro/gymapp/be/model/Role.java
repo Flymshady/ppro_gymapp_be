@@ -14,28 +14,28 @@ public class Role {
     @Column(name = "role_name")
 
     @NotBlank
-    private RoleType type;
+    private String name;
     @OneToMany(mappedBy = "role")
     private List<Account> accounts;
 
 
-    public Role(@NotBlank RoleType type, List<Account> accounts) {
-        this.type = type;
+    public Role(@NotBlank String name, List<Account> accounts) {
+        this.name = name;
         this.accounts = accounts;
     }
+
 
     public Role(){}
     public Long getId() {
         return id;
     }
 
-
-    public RoleType getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(RoleType type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Account> getAccounts() {
@@ -46,10 +46,5 @@ public class Role {
         this.accounts = accounts;
     }
 
-    public enum RoleType {
-        EMPLOYEE,
-        TRAINER,
-        ADMIN,
-        CLIENT
-    }
+
 }
