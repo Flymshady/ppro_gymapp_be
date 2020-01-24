@@ -1,5 +1,8 @@
 package cz.ppro.gymapp.be.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
@@ -27,8 +30,10 @@ public class Ticket {
     private boolean valid;
     @ManyToOne
 
-    @NotBlank
+    //TODO pridat notblank anot - pryc z duvodu testovani
+    @JsonIgnore
     private Account account;
+
     @OneToMany(mappedBy = "ticket")
     private List<Entrance> entrances;
     @ManyToOne

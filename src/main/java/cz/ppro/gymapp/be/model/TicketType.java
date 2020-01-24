@@ -24,10 +24,15 @@ public class TicketType {
 
     private List<Ticket> tickets;
 
-    public TicketType(@NotBlank Type type, @NotBlank double price, @NotBlank int entrancesTotal) {
-        this.type = type;
-        this.price = price;
-        this.entrancesTotal = entrancesTotal;
+    public TicketType(@NotBlank String type) {
+        this.type = Type.valueOf(type);
+        if(this.type == Type.FITNESS) {
+            this.price = 300;
+            this.entrancesTotal = 10;
+        } else {
+            this.price = 400;
+            this.entrancesTotal = 15;
+        }
     }
 
     public int getEntrancesTotal() {
