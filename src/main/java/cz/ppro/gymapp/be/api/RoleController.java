@@ -1,10 +1,10 @@
 package cz.ppro.gymapp.be.api;
 
 import cz.ppro.gymapp.be.exception.ResourceNotFoundException;
-import cz.ppro.gymapp.be.model.Account;
 import cz.ppro.gymapp.be.model.Role;
 import cz.ppro.gymapp.be.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,12 +32,13 @@ public class RoleController {
     }
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody
-    Role create(@Valid @NonNull @RequestBody Role role){
+    HttpStatus create(@Valid @NonNull @RequestBody Role role){
         if(roleRepository.existsByName(role.getName())){
-            return null;
+            return HttpStatus.BAD_REQUEST;
 
         }
-        return roleRepository.save(role);
+        roleRepository.save(role);
+        return HttpStatus.ACCEPTED;
 
 
     }
