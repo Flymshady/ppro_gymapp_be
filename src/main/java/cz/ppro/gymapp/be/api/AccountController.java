@@ -47,10 +47,16 @@ public class AccountController {
                          @Valid @RequestBody Account accountDetails){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
-        account.setUser(accountDetails.getUser());
+
         account.setTickets(accountDetails.getTickets());
         account.setLogin(accountDetails.getLogin());
         account.setPassword(accountDetails.getPassword());
+        account.setEmail(accountDetails.getEmail());
+        account.setPhoneNumber(accountDetails.getPhoneNumber());
+        account.setFirstName(accountDetails.getFirstName());
+        account.setLastName(accountDetails.getLastName());
+        account.setCreatedCourses(accountDetails.getCreatedCourses());
+        account.setSignedCourses(accountDetails.getSignedCourses());
         Account updatedAccount = accountRepository.save(account);
         return updatedAccount;
     }
