@@ -46,6 +46,10 @@ public class Account {
 
     public Account(){}
 
+    public Long getId() {
+        return id;
+    }
+
     public List<Course> getSignedCourses() {
         return signedCourses;
     }
