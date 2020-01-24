@@ -34,10 +34,11 @@ public class RoleController {
     public @ResponseBody
     Role create(@Valid @NonNull @RequestBody Role role){
         if(roleRepository.existsByName(role.getName())){
-            return roleRepository.save(role);
+            return null;
 
         }
-        return null;
+        return roleRepository.save(role);
+
 
     }
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
