@@ -24,6 +24,10 @@ public class Role {
         this.accounts = accounts;
     }
 
+    public Role(@NotBlank String name) {
+        this.name = name;
+    }
+
 
     public Role(){}
     public Long getId() {

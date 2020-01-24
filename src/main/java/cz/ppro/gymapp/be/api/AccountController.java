@@ -60,8 +60,6 @@ public class AccountController {
     Account createAdmin(@Valid @NonNull @RequestBody Account account){
         String password = passwordEncoder.encode(account.getPassword());
         account.setPassword(password);
-        Role userRole = roleRepository.findByName("Admin");
-        account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Provide correct Actor Id");
