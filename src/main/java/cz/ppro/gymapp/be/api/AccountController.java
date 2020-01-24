@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -40,45 +42,45 @@ public class AccountController {
     }
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody
-    HttpStatus create(@Valid @NonNull @RequestBody Account account){
+    Account create(@Valid @NonNull @RequestBody Account account){
 
         String password = passwordEncoder.encode(account.getPassword());
         account.setPassword(password);
         Role userRole = roleRepository.findByName("client");
         account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
-            return HttpStatus.BAD_REQUEST;
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Provide correct Actor Id");
         }
-        accountRepository.save(account);
-        return HttpStatus.ACCEPTED;
+        return accountRepository.save(account);
 
     }
     @RequestMapping(value = "/create/admin", method = RequestMethod.POST)
     public @ResponseBody
-    HttpStatus createAdmin(@Valid @NonNull @RequestBody Account account){
+    Account createAdmin(@Valid @NonNull @RequestBody Account account){
         String password = passwordEncoder.encode(account.getPassword());
         account.setPassword(password);
         Role userRole = roleRepository.findByName("Admin");
         account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
-            return HttpStatus.BAD_REQUEST;
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Provide correct Actor Id");
         }
-        accountRepository.save(account);
-        return HttpStatus.ACCEPTED;
+        return accountRepository.save(account);
 
     }
     @RequestMapping(value = "/create/employee", method = RequestMethod.POST)
     public @ResponseBody
-    HttpStatus createEmployee(@Valid @NonNull @RequestBody Account account){
+    Account createEmployee(@Valid @NonNull @RequestBody Account account){
         String password = passwordEncoder.encode(account.getPassword());
         account.setPassword(password);
         Role userRole = roleRepository.findByName("Employee");
         account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
-            return HttpStatus.BAD_REQUEST;
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Provide correct Actor Id");
         }
-        accountRepository.save(account);
-        return HttpStatus.ACCEPTED;
+        return accountRepository.save(account);
     }
 
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)

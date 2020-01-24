@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -32,13 +33,13 @@ public class RoleController {
     }
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody
-    HttpStatus create(@Valid @NonNull @RequestBody Role role){
+    Role create(@Valid @NonNull @RequestBody Role role){
         if(roleRepository.existsByName(role.getName())){
-            return HttpStatus.BAD_REQUEST;
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Provide correct Actor Id");
 
         }
-        roleRepository.save(role);
-        return HttpStatus.ACCEPTED;
+        return roleRepository.save(role);
 
 
     }
