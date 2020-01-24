@@ -36,6 +36,18 @@ public class AccountController {
         return accountRepository.save(account);
 
     }
+    @RequestMapping(value = "/create/admin", method = RequestMethod.POST)
+    public @ResponseBody
+    Account createAdmin(@Valid @NonNull @RequestBody Account account){
+        return accountRepository.save(account);
+
+    }
+    @RequestMapping(value = "/create/employee", method = RequestMethod.POST)
+    public @ResponseBody
+    Account createEmployee(@Valid @NonNull @RequestBody Account account){
+        return accountRepository.save(account);
+    }
+
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
     public void remove(@PathVariable(value = "id") Long id){
         Account account = accountRepository.findById(id)
