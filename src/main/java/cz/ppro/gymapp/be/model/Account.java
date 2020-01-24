@@ -1,6 +1,8 @@
 package cz.ppro.gymapp.be.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -36,10 +38,14 @@ public class Account {
     @OneToMany(mappedBy = "trainer")
     private List<Course> createdCourses;
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "role_name", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Role role;
 
-    public Account(String firstName, @NotBlank String lastName, @NotBlank String email, @NotBlank String phoneNumber, List<Ticket> tickets, @NotBlank String login, @NotBlank String password, List<Course> signedCourses, List<Course> createdCourses, @NotBlank Role role) {
+    public Account(String firstName, @NotBlank String lastName, @NotBlank String email, @NotBlank String phoneNumber, List<Ticket> tickets, @NotBlank String login, @NotBlank String password, List<Course> signedCourses, List<Course> createdCourses, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -51,6 +57,8 @@ public class Account {
         this.createdCourses = createdCourses;
         this.role = role;
     }
+
+
 
     public Account(){}
 

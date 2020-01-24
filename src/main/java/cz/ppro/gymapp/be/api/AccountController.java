@@ -46,8 +46,8 @@ public class AccountController {
 
         String password = passwordEncoder.encode(account.getPassword());
         account.setPassword(password);
-        Role userRole = roleRepository.findByName("client");
-        account.setRole(userRole);
+        //Role userRole = roleRepository.findByName('hovno');
+        //account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Provide correct Actor Id");
