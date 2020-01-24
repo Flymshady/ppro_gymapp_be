@@ -6,12 +6,12 @@ import cz.ppro.gymapp.be.model.Role;
 import cz.ppro.gymapp.be.repository.AccountRepository;
 import cz.ppro.gymapp.be.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/accounts")
@@ -40,42 +40,45 @@ public class AccountController {
     }
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public @ResponseBody
-    Account create(@Valid @NonNull @RequestBody Account account){
+    HttpStatus create(@Valid @NonNull @RequestBody Account account){
 
         String password = passwordEncoder.encode(account.getPassword());
         account.setPassword(password);
         Role userRole = roleRepository.findByName("client");
         account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
-            return null;
+            return HttpStatus.BAD_REQUEST;
         }
-        return accountRepository.save(account);
+        accountRepository.save(account);
+        return HttpStatus.ACCEPTED;
 
     }
     @RequestMapping(value = "/create/admin", method = RequestMethod.POST)
     public @ResponseBody
-    Account createAdmin(@Valid @NonNull @RequestBody Account account){
+    HttpStatus createAdmin(@Valid @NonNull @RequestBody Account account){
         String password = passwordEncoder.encode(account.getPassword());
         account.setPassword(password);
         Role userRole = roleRepository.findByName("Admin");
         account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
-            return null;
+            return HttpStatus.BAD_REQUEST;
         }
-        return accountRepository.save(account);
+        accountRepository.save(account);
+        return HttpStatus.ACCEPTED;
 
     }
     @RequestMapping(value = "/create/employee", method = RequestMethod.POST)
     public @ResponseBody
-    Account createEmployee(@Valid @NonNull @RequestBody Account account){
+    HttpStatus createEmployee(@Valid @NonNull @RequestBody Account account){
         String password = passwordEncoder.encode(account.getPassword());
         account.setPassword(password);
         Role userRole = roleRepository.findByName("Employee");
         account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
-            return null;
+            return HttpStatus.BAD_REQUEST;
         }
-        return accountRepository.save(account);
+        accountRepository.save(account);
+        return HttpStatus.ACCEPTED;
     }
 
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
