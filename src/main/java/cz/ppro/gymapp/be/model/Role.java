@@ -1,5 +1,7 @@
 package cz.ppro.gymapp.be.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -16,6 +18,7 @@ public class Role {
     @NotBlank
     private String name;
     @OneToMany(mappedBy = "role")
+    @JsonIgnore
     private List<Account> accounts;
 
 
