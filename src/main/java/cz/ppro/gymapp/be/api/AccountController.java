@@ -55,12 +55,12 @@ public class AccountController {
         return accountRepository.save(account);
 
     }
-    @RequestMapping(value = "/create/admin", method = RequestMethod.POST)
+    @RequestMapping(value = "/create/admin/{roleName}", method = RequestMethod.POST)
     public @ResponseBody
-    Account createAdmin(@Valid @NonNull @RequestBody Account account){
+    Account createAdmin(@Valid @NonNull @RequestBody Account account, @PathVariable(value = "roleName") String roleName){
         String password = passwordEncoder.encode(account.getPassword());
         account.setPassword(password);
-        Role userRole = roleRepository.findByName("Admin");
+        Role userRole = roleRepository.findByName(roleName);
         account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
             throw new ResponseStatusException(
