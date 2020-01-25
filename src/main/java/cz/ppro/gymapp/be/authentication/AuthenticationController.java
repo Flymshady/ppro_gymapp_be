@@ -15,3 +15,4 @@ public class AuthenticationController {
         return new AuthenticationBean("Ověření proběhlo úspěšně");
     }
 }
+
