@@ -8,9 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthenticationController {
 
-    @GetMapping(path = "/basicauth")
-    public AuthenticationBean helloWorldBean() {
-        //throw new RuntimeException("Ověření selhalo");
+    @GetMapping(path = "/basicauthsuccess")
+    public AuthenticationBean successBean() {
         return new AuthenticationBean("Ověření proběhlo úspěšně");
+    }
+
+    @GetMapping(path = "/basicauthfailure")
+    public AuthenticationBean failureBean() {
+        throw new RuntimeException("Ověření selhalo");
     }
 }
