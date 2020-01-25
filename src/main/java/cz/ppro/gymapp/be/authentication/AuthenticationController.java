@@ -1,7 +1,9 @@
 package cz.ppro.gymapp.be.authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 //Controller
 @CrossOrigin
@@ -14,5 +16,16 @@ public class AuthenticationController {
         //throw new RuntimeException("Ověření selhalo");
         return new AuthenticationBean("Ověření proběhlo úspěšně");
     }
+
+    @RequestMapping(value = "/current", method = RequestMethod.GET)
+    public Principal getUserPrincipal() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if ((auth == null) || (auth.getPrincipal() == null)) {
+            return null;
+        }
+        return auth;
+    }
+
 }
 
