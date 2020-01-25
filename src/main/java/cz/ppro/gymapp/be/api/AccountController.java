@@ -25,10 +25,10 @@ public class AccountController {
     private RoleRepository roleRepository;
 
     @Autowired
-    public AccountController(AccountRepository accountRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository){
+    public AccountController(AccountRepository accountRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder){
         this.accountRepository=accountRepository;
-        this.passwordEncoder=passwordEncoder;
         this.roleRepository=roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
