@@ -15,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 @RequestMapping("/accounts")
 @RestController
 public class AccountController {
@@ -25,10 +25,10 @@ public class AccountController {
     private RoleRepository roleRepository;
 
     @Autowired
-    public AccountController(AccountRepository accountRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository){
+    public AccountController(AccountRepository accountRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder){
         this.accountRepository=accountRepository;
-        this.passwordEncoder=passwordEncoder;
         this.roleRepository=roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
@@ -46,8 +46,8 @@ public class AccountController {
 
         String password = passwordEncoder.encode(account.getPassword());
         account.setPassword(password);
-        Role userRole = roleRepository.findByName("client");
-        account.setRole(userRole);
+        //Role userRole = roleRepository.findByName('hovno');
+        //account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Provide correct Actor Id");
@@ -62,6 +62,7 @@ public class AccountController {
         account.setPassword(password);
         Role userRole = roleRepository.findByName(roleName);
         account.setRole(userRole);
+
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Provide correct Actor Id");

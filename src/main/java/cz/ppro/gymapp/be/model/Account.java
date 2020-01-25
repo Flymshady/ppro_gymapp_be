@@ -39,11 +39,7 @@ public class Account {
     private List<Course> createdCourses;
 
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "role_name", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
+    @ManyToOne
     private Role role;
 
     public Account(String firstName, @NotBlank String lastName, @NotBlank String email, @NotBlank String phoneNumber, List<Ticket> tickets, @NotBlank String login, @NotBlank String password, List<Course> signedCourses, List<Course> createdCourses, Role role) {
