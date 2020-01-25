@@ -3,8 +3,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 //Controller
 @CrossOrigin
 @RestController
@@ -18,14 +16,12 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/current", method = RequestMethod.GET)
-    public Principal getUserPrincipal() {
+    public String getUserPrincipal() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         if ((auth == null) || (auth.getPrincipal() == null)) {
             return null;
         }
-        return auth;
+        return  auth.getAuthorities().toString();
     }
-
 }
 
