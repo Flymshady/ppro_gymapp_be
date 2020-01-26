@@ -50,6 +50,14 @@ public class CourseController {
     public void remove(@PathVariable(value = "id") Long id){
         Course course = courseRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Course", "id", id));
+        Account trainer = course.getTrainer();
+        trainer.getCreatedCourses().remove(course);
+        accountRepository.save(trainer);
+        List<Account> clients = course.getSignedClients();
+        for( Account cl : clients){
+            cl.getSignedCourses().remove(course);
+            accountRepository.save(cl);
+        }
         courseRepository.delete(course);
     }
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)

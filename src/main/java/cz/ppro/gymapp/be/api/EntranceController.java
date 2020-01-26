@@ -7,8 +7,10 @@ import cz.ppro.gymapp.be.repository.AccountRepository;
 import cz.ppro.gymapp.be.repository.EntranceRepository;
 import cz.ppro.gymapp.be.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -42,10 +44,14 @@ public class EntranceController {
         return entranceRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Entrance", "id", id));
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create/{ticketId}", method = RequestMethod.POST)
     public @ResponseBody
-    Entrance create(@Valid @NonNull @RequestBody Entrance entrance){
-        Ticket ticket = entrance.getTicket();
+    Entrance create(@Valid @NonNull @RequestBody Entrance entrance, @PathVariable(value = "id") Long ticketId){
+        Ticket ticket = ticketRepository.getOne(ticketId);
+        if(ticket==null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Provide correct Ticket Id");
+        }
         if(ticket.isValid()){
             if(ticket.getEntrances().size()<ticket.getTicketType().getEntrancesTotal()){
                 ticket.getEntrances().add(entrance);
@@ -54,7 +60,9 @@ public class EntranceController {
             }
         }
         //asi doplnit aby to hazelo chybu ze je permice neplatna nebo uz ma plny vstupy
-        return null;
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "Invalid ticket");
+
 
 
     }
