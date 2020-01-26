@@ -24,9 +24,7 @@ public class Ticket {
     @NotBlank
     @Column(name = "ticket_end_date")
     private Date endDate;
-    @Column(name = "ticket_price")
-    @NotBlank
-    private double price;
+
     @Column(name = "ticket_valid")
     @NotBlank
     private boolean valid;
@@ -41,23 +39,14 @@ public class Ticket {
     @ManyToOne
     private TicketType ticketType;
 
-    public Ticket(@NotBlank String name, @NotBlank Date beginDate, @NotBlank Date endDate, @NotBlank double price, @NotBlank boolean valid, Account account, List<Entrance> entrances, TicketType ticketType) {
+    public Ticket(@NotBlank String name, @NotBlank Date beginDate, @NotBlank Date endDate, @NotBlank boolean valid, @NotBlank Account account, List<Entrance> entrances, TicketType ticketType) {
         this.name = name;
         this.beginDate = beginDate;
         this.endDate = endDate;
-        this.price = price;
         this.valid = valid;
         this.account = account;
         this.entrances = entrances;
         this.ticketType = ticketType;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public List<Entrance> getEntrances() {
@@ -122,6 +111,4 @@ public class Ticket {
     public void setAccount(Account account) {
         this.account = account;
     }
-
-
 }

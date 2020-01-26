@@ -60,7 +60,6 @@ public class TicketController {
         ticket.setBeginDate(ticketDetails.getBeginDate());
         ticket.setEndDate(ticketDetails.getEndDate());
         ticket.setName(ticketDetails.getName());
-        ticket.setPrice(ticketDetails.getPrice());
         ticket.setValid(ticketDetails.isValid());
         ticket.setTicketType(ticketDetails.getTicketType());
         ticket.setEntrances(ticketDetails.getEntrances());

@@ -167,7 +167,7 @@ public class Account {
         for (int i=0; i<tickets.size(); i++)
         {
            if(tickets.get(i).getBeginDate().after(monthAgo)) {
-               count = count + tickets.get(i).getPrice();
+               count = count + tickets.get(i).getTicketType().getPrice();
            }
         }
         return count;
