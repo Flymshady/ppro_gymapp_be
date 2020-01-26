@@ -213,6 +213,20 @@ public class Account {
         }
         return count;
     }
+
+    // pocet vstupu za obdobi od do
+    public double getEntrances(Date since, Date to){
+        double count=0;
+        for (int i=0; i<tickets.size(); i++)
+        {
+            for (int j=0; j<tickets.get(i).getEntrances().size(); j++)
+            {
+            if(tickets.get(i).getEntrances().get(j).getBeginDate().after(since)&&tickets.get(i).getEntrances().get(j).getBeginDate().before(to)) {
+                count++;
+            }
+        }}
+        return count;
+    }
     // nejoblibenejsi kurz
     // nejoblibenejsi den/cas
 }
