@@ -1,7 +1,9 @@
 package cz.ppro.gymapp.be.api;
 
 import cz.ppro.gymapp.be.exception.ResourceNotFoundException;
+import cz.ppro.gymapp.be.model.Account;
 import cz.ppro.gymapp.be.model.Course;
+import cz.ppro.gymapp.be.repository.AccountRepository;
 import cz.ppro.gymapp.be.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -16,10 +18,12 @@ import java.util.List;
 public class CourseController {
 
     private CourseRepository courseRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    public CourseController(CourseRepository courseRepository){
+    public CourseController(CourseRepository courseRepository, AccountRepository accountRepository){
         this.courseRepository=courseRepository;
+        this.accountRepository=accountRepository;
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
@@ -40,6 +44,14 @@ public class CourseController {
     public void remove(@PathVariable(value = "id") Long id){
         Course course = courseRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Course", "id", id));
+        Account trainer = course.getTrainer();
+        trainer.getCreatedCourses().remove(course);
+        accountRepository.save(trainer);
+        List<Account> clients = course.getSignedClients();
+        for( Account cl : clients){
+            cl.getSignedCourses().remove(course);
+            accountRepository.save(cl);
+        }
         courseRepository.delete(course);
     }
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
