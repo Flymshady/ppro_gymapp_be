@@ -55,4 +55,6 @@ public class Entrance {
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
     }
+
+    //get todays entrances - porovnani podle datumu pro vsechny -to samy pro mesic, rok
 }

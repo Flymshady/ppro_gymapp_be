@@ -6,6 +6,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -142,4 +144,75 @@ public class Account {
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
+
+    // pocet permanentek od pocatku veku
+    public int getTicketCount(){
+        int count=0;
+        for (int i=0; i<tickets.size(); i++)
+        {
+            count++;
+        }
+        return count;
+    }
+
+    // nakupy za posledni mesic
+    public double getPurchasesPrice(){
+        double count=0;
+        Date currentDate = new Date();
+        // convert date to calendar
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        calendar.add(Calendar.MONTH, -1);
+        Date monthAgo = calendar.getTime();
+        for (int i=0; i<tickets.size(); i++)
+        {
+           if(tickets.get(i).getBeginDate().after(monthAgo)) {
+               count = count + tickets.get(i).getPrice();
+           }
+        }
+        return count;
+    }
+
+    //pocet nakupu za posledni mesic
+    public int getPurchasesCount(){
+        int count=0;
+        Date currentDate = new Date();
+        // convert date to calendar
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        calendar.add(Calendar.MONTH, -1);
+        Date monthAgo = calendar.getTime();
+        for (int i=0; i<tickets.size(); i++)
+        {
+            if(tickets.get(i).getBeginDate().after(monthAgo)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // pocet navstivenych kurzu od pocatku veku
+    public int getCoursesVisited(){
+        int count=0;
+        Date date = new Date();
+        for (int i=0; i<signedCourses.size(); i++)
+        {
+            if(!signedCourses.get(i).getBeginDate().after(date)) {
+                count++;
+            }
+        }
+        return count;
+    }
+    // pocet vytvorenych kurzu od pocatku veku
+    public int getCoursesCreated(){
+        int count=0;
+        Date date = new Date();
+        for (int i=0; i<createdCourses.size(); i++)
+        {
+                count++;
+        }
+        return count;
+    }
+    // nejoblibenejsi kurz
+    // nejoblibenejsi den/cas
 }
