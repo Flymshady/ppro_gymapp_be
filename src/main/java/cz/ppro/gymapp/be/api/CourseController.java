@@ -1,25 +1,30 @@
 package cz.ppro.gymapp.be.api;
 
 import cz.ppro.gymapp.be.exception.ResourceNotFoundException;
+import cz.ppro.gymapp.be.model.Account;
 import cz.ppro.gymapp.be.model.Course;
+import cz.ppro.gymapp.be.repository.AccountRepository;
 import cz.ppro.gymapp.be.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.tags.Param;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 @RequestMapping("/courses")
 @RestController
 public class CourseController {
 
     private CourseRepository courseRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    public CourseController(CourseRepository courseRepository){
+    public CourseController(CourseRepository courseRepository, AccountRepository accountRepository){
         this.courseRepository=courseRepository;
+        this.accountRepository=accountRepository;
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
@@ -32,7 +37,12 @@ public class CourseController {
         return courseRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Course", "id", id));
     }
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public @ResponseBody Course create(@Valid @NonNull @RequestBody Course course){
+    public @ResponseBody Course create(@Valid @NonNull @RequestBody Course course,
+                                       @PathVariable(value = "id") Long trainerId){
+
+        Account trainer = accountRepository.findById(trainerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Account", "id", trainerId));
+        course.setTrainer(trainer);
         return courseRepository.save(course);
 
     }

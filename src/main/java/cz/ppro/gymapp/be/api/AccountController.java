@@ -2,17 +2,21 @@ package cz.ppro.gymapp.be.api;
 
 import cz.ppro.gymapp.be.exception.ResourceNotFoundException;
 import cz.ppro.gymapp.be.model.Account;
+import cz.ppro.gymapp.be.model.CustomUserDetails;
 import cz.ppro.gymapp.be.model.Role;
 import cz.ppro.gymapp.be.repository.AccountRepository;
 import cz.ppro.gymapp.be.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @CrossOrigin
@@ -34,6 +38,11 @@ public class AccountController {
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Account> getAll(){
         return accountRepository.findAll();
+    }
+
+    @RequestMapping(value = "/all/trainer", method = RequestMethod.GET)
+    public List<Account> getTrainers(){
+        return accountRepository.findAllTrainers();
     }
 
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
@@ -108,6 +117,4 @@ public class AccountController {
         Account updatedAccount = accountRepository.save(account);
         return updatedAccount;
     }
-
-
 }
