@@ -73,7 +73,7 @@ public class Statistics {
         Date date = new Date();
         for (int i=0; i<account.getSignedCourses().size(); i++)
         {
-            if(!account.getSignedCourses().get(i).getBeginDate().after(date)) {
+            if(!account.getSignedCourses().get(i).getCourse().getBeginDate().after(date)) {
                 count++;
             }
         }
