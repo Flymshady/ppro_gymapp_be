@@ -119,8 +119,8 @@ public class AccountController {
         Account updatedAccount = accountRepository.save(account);
         return updatedAccount;
     }
-
-    /*@RequestMapping(value = "/ticketcount/{id}", method = RequestMethod.GET)
+/*
+    @RequestMapping(value = "/ticketcount/{id}", method = RequestMethod.GET)
     public int getTicketCount(@PathVariable(value = "id") Long id,
                               @Valid @RequestBody Account accountDetails){
         Account account = accountRepository.findById(id)
@@ -142,6 +142,7 @@ public class AccountController {
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         return  account.getPurchasesCount();
     }
+
     @RequestMapping(value = "/coursesvisited/{id}", method = RequestMethod.GET)
     public int getCoursesVisited(@PathVariable(value = "id") Long id,
                                  @Valid @RequestBody Account accountDetails){
@@ -149,11 +150,15 @@ public class AccountController {
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         return  account.getCoursesVisited();
     }
+
+
     @RequestMapping(value = "/coursescreated/{id}", method = RequestMethod.GET)
     public int getCoursesCreated(@PathVariable(value = "id") Long id,
                                  @Valid @RequestBody Account accountDetails){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         return  account.getCoursesCreated();
-    }*/
+    }
+    */
+
 }

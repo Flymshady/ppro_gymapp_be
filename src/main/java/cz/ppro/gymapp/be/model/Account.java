@@ -1,5 +1,6 @@
 package cz.ppro.gymapp.be.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -37,6 +38,7 @@ public class Account {
     private String password;
     @ManyToMany
     private List<Course> signedCourses;
+    @JsonIgnore
     @OneToMany(mappedBy = "trainer")
     private List<Course> createdCourses;
 
@@ -58,8 +60,8 @@ public class Account {
     }
 
 
-
-    public Account(){}
+    public Account() {
+    }
 
     public Long getId() {
         return id;
@@ -144,7 +146,7 @@ public class Account {
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
-
+/*
     // pocet permanentek od pocatku veku
     /*public int getTicketCount(){
         int count=0;
@@ -229,4 +231,6 @@ public class Account {
     }*/
     // nejoblibenejsi kurz
     // nejoblibenejsi den/cas
+
+
 }

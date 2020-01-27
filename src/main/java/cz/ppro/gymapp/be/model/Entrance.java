@@ -2,6 +2,7 @@ package cz.ppro.gymapp.be.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -13,7 +14,7 @@ public class Entrance {
     private Long id;
     @Column(name = "ticket_begin_date")
     private Date beginDate;
-    @NotBlank
+    @NotNull
     @Column(name = "ticket_end_date")
     private Date endDate;
     @ManyToOne

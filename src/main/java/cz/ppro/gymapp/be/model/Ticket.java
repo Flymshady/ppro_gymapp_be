@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -18,10 +19,10 @@ public class Ticket {
     @NotBlank
     @Column(name = "ticket_name")
     private String name;
-    @NotBlank
+    @NotNull
     @Column(name = "ticket_begin_date")
     private Date beginDate;
-    @NotBlank
+    @NotNull
     @Column(name = "ticket_end_date")
     private Date endDate;
 
