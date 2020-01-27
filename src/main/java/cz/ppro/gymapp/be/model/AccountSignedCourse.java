@@ -1,0 +1,57 @@
+package cz.ppro.gymapp.be.model;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+
+@Entity
+@Table(name="account_signed_course")
+public class AccountSignedCourse {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "account_signed_curse_id")
+    private Long id;
+    @NotNull
+    @Column(name = "account_signed_curse_date")
+    private Date signDate;
+    @ManyToOne
+    private Account client;
+    @ManyToOne
+    private Course course;
+
+    public AccountSignedCourse(@NotNull Date signDate, Account client, Course course) {
+        this.signDate = signDate;
+        this.client = client;
+        this.course = course;
+    }
+    public AccountSignedCourse(){}
+
+    public Long getId() {
+        return id;
+    }
+
+
+    public Date getSignDate() {
+        return signDate;
+    }
+
+    public void setSignDate(Date signDate) {
+        this.signDate = signDate;
+    }
+
+    public Account getClient() {
+        return client;
+    }
+
+    public void setClient(Account client) {
+        this.client = client;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+}

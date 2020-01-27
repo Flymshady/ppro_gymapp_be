@@ -25,10 +25,10 @@ public class Course {
     @Column(name = "course_max_capacity")
     @NotNull
     private int maxCapacity;
-    @ManyToMany(mappedBy = "signedCourses")
-    private List<Account> signedClients;
     @ManyToOne
     private Account trainer;
+    @OneToMany(mappedBy = "course")
+    private List<AccountSignedCourse> accountSignedCourses;
     @NotNull
     private Date beginDate;
     @NotNull
@@ -36,17 +36,26 @@ public class Course {
     @NotNull
     private int count;
 
-    public Course(@NotBlank String name, @NotBlank String description, @NotBlank double price, @NotBlank int maxCapacity, List<Account> signedClients, Account trainer, @NotBlank Date beginDate, Date endDate, @NotBlank int count) {
+    public Course(@NotBlank String name, @NotBlank String description, @NotNull double price, @NotNull int maxCapacity, Account trainer, List<AccountSignedCourse> accountSignedCourses, @NotNull Date beginDate, @NotNull Date endDate, @NotNull int count) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.maxCapacity = maxCapacity;
-        this.signedClients = signedClients;
         this.trainer = trainer;
+        this.accountSignedCourses = accountSignedCourses;
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.count = count;
     }
+
+    public List<AccountSignedCourse> getAccountSignedCourses() {
+        return accountSignedCourses;
+    }
+
+    public void setAccountSignedCourses(List<AccountSignedCourse> accountSignedCourses) {
+        this.accountSignedCourses = accountSignedCourses;
+    }
+
     public Course(){}
 
     public Long getId() {
@@ -86,13 +95,6 @@ public class Course {
         this.maxCapacity = maxCapacity;
     }
 
-    public List<Account> getSignedClients() {
-        return signedClients;
-    }
-
-    public void setSignedClients(List<Account> signedClients) {
-        this.signedClients = signedClients;
-    }
 
     public Account getTrainer() {
         return trainer;
