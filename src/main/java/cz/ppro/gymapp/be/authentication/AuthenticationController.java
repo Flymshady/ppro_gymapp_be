@@ -9,19 +9,22 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     @CrossOrigin
-    @GetMapping(path = "/basicauthsuccess")
-    public AuthenticationBean successBean() {
-        //throw new RuntimeException("Ověření selhalo");
-        return new AuthenticationBean("Ověření proběhlo úspěšně");
-    }
-
-
-    @CrossOrigin
     @GetMapping(path = "/basicauth")
     public String helloWorldBean() {
+        //throw new RuntimeException("Ověření selhalo");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if ((auth == null) || (auth.getPrincipal() == null)) {
+            return null;
+        }
+        return  auth.getAuthorities().toString();
+    }
 
+    @RequestMapping(value = "/current", method = RequestMethod.GET)
+    public String getUserPrincipal() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if ((auth == null) || (auth.getPrincipal() == null)) {
+            return null;
+        }
         return  auth.getAuthorities().toString();
     }
 }
-

@@ -31,7 +31,6 @@ public class Course {
     @NotBlank
     private Date beginDate;
 
-
     private Date endDate;
     @NotBlank
     private int count;
