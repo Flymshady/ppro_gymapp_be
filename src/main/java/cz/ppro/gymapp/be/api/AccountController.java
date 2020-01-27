@@ -59,7 +59,7 @@ public class AccountController {
         //account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Provide correct Actor Id");
+                    HttpStatus.BAD_REQUEST, "Username already taken");
         }
         return accountRepository.save(account);
 
@@ -74,7 +74,7 @@ public class AccountController {
 
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Provide correct Actor Id");
+                    HttpStatus.BAD_REQUEST, "Username already taken");
         }
         return accountRepository.save(account);
 
@@ -88,17 +88,19 @@ public class AccountController {
         account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Provide correct Actor Id");
+                    HttpStatus.BAD_REQUEST, "Username already taken");
         }
         return accountRepository.save(account);
     }
 
-    @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
+    //odstraneni uctu bych snad ani nedelal - musely by se postupne odstranit vsechny jeho zaznamy o ticketech, entrances...
+    /*@RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
     public void remove(@PathVariable(value = "id") Long id){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         accountRepository.delete(account);
-    }
+    }*/
+
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public Account update(@PathVariable(value = "id") Long id,
                          @Valid @RequestBody Account accountDetails){
@@ -116,5 +118,42 @@ public class AccountController {
         account.setSignedCourses(accountDetails.getSignedCourses());
         Account updatedAccount = accountRepository.save(account);
         return updatedAccount;
+    }
+
+    @RequestMapping(value = "/ticketcount/{id}", method = RequestMethod.PUT)
+    public int getTicketCount(@PathVariable(value = "id") Long id,
+                              @Valid @RequestBody Account accountDetails){
+        Account account = accountRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
+        return  account.getTicketCount();
+    }
+
+    @RequestMapping(value = "/purchasesprice/{id}", method = RequestMethod.PUT)
+    public double getPurchasesPrice(@PathVariable(value = "id") Long id,
+                                    @Valid @RequestBody Account accountDetails){
+        Account account = accountRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
+        return  account.getPurchasesPrice();
+    }
+    @RequestMapping(value = "/purchasescount/{id}", method = RequestMethod.PUT)
+    public int getPurchasesCount(@PathVariable(value = "id") Long id,
+                                 @Valid @RequestBody Account accountDetails){
+        Account account = accountRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
+        return  account.getPurchasesCount();
+    }
+    @RequestMapping(value = "/coursesvisited/{id}", method = RequestMethod.PUT)
+    public int getCoursesVisited(@PathVariable(value = "id") Long id,
+                                 @Valid @RequestBody Account accountDetails){
+        Account account = accountRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
+        return  account.getCoursesVisited();
+    }
+    @RequestMapping(value = "/coursescreated/{id}", method = RequestMethod.PUT)
+    public int getCoursesCreated(@PathVariable(value = "id") Long id,
+                                 @Valid @RequestBody Account accountDetails){
+        Account account = accountRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
+        return  account.getCoursesCreated();
     }
 }
