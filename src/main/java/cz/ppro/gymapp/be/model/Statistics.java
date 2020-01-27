@@ -103,6 +103,25 @@ public class Statistics {
         return count;
     }
 
+    //pocet vstupu za urcity mesic
+    public int getCountOfEntrancesPerMonth(int month, int year){
+        int count=0;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month-1, 1);
+        Date since = calendar.getTime();
+        calendar.add(Calendar.MONTH, +1);
+        Date to = calendar.getTime();
+        for (int i=0; i<account.getTickets().size(); i++)
+        {
+            for (int j=0; j<account.getTickets().get(i).getEntrances().size(); j++)
+            {
+                if(account.getTickets().get(i).getEntrances().get(j).getBeginDate().after(since)&&account.getTickets().get(i).getEntrances().get(j).getBeginDate().before(to)) {
+                    count++;
+                }
+            }}
+        return count;
+    }
+
     // nejoblibenejsi kurz
     // nejoblibenejsi den/cas
 
