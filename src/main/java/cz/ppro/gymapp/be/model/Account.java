@@ -146,7 +146,7 @@ public class Account {
     }
 
     // pocet permanentek od pocatku veku
-    public int getTicketCount(){
+    /*public int getTicketCount(){
         int count=0;
         for (int i=0; i<tickets.size(); i++)
         {
@@ -226,7 +226,7 @@ public class Account {
             }
         }}
         return count;
-    }
+    }*/
     // nejoblibenejsi kurz
     // nejoblibenejsi den/cas
 }

@@ -120,7 +120,7 @@ public class AccountController {
         return updatedAccount;
     }
 
-    @RequestMapping(value = "/ticketcount/{id}", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/ticketcount/{id}", method = RequestMethod.GET)
     public int getTicketCount(@PathVariable(value = "id") Long id,
                               @Valid @RequestBody Account accountDetails){
         Account account = accountRepository.findById(id)
@@ -155,5 +155,5 @@ public class AccountController {
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         return  account.getCoursesCreated();
-    }
+    }*/
 }
