@@ -120,7 +120,7 @@ public class AccountController {
         return updatedAccount;
     }
 
-    @RequestMapping(value = "/ticketcount/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/ticketcount/{id}", method = RequestMethod.GET)
     public int getTicketCount(@PathVariable(value = "id") Long id,
                               @Valid @RequestBody Account accountDetails){
         Account account = accountRepository.findById(id)
@@ -128,28 +128,28 @@ public class AccountController {
         return  account.getTicketCount();
     }
 
-    @RequestMapping(value = "/purchasesprice/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/purchasesprice/{id}", method = RequestMethod.GET)
     public double getPurchasesPrice(@PathVariable(value = "id") Long id,
                                     @Valid @RequestBody Account accountDetails){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         return  account.getPurchasesPrice();
     }
-    @RequestMapping(value = "/purchasescount/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/purchasescount/{id}", method = RequestMethod.GET)
     public int getPurchasesCount(@PathVariable(value = "id") Long id,
                                  @Valid @RequestBody Account accountDetails){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         return  account.getPurchasesCount();
     }
-    @RequestMapping(value = "/coursesvisited/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/coursesvisited/{id}", method = RequestMethod.GET)
     public int getCoursesVisited(@PathVariable(value = "id") Long id,
                                  @Valid @RequestBody Account accountDetails){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         return  account.getCoursesVisited();
     }
-    @RequestMapping(value = "/coursescreated/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/coursescreated/{id}", method = RequestMethod.GET)
     public int getCoursesCreated(@PathVariable(value = "id") Long id,
                                  @Valid @RequestBody Account accountDetails){
         Account account = accountRepository.findById(id)
