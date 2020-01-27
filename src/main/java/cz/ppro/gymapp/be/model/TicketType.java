@@ -2,6 +2,7 @@ package cz.ppro.gymapp.be.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -15,7 +16,7 @@ public class TicketType {
     @NotBlank
     private Type type;
     @Column(name = "ticket_type_price")
-    @NotBlank
+    @NotNull
     private double price;
     @NotBlank
     @Column(name = "ticket_type_entrances_total")

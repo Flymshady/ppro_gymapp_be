@@ -36,7 +36,7 @@ public class CourseController {
     public Course getById(@PathVariable(value = "id") Long id){
         return courseRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Course", "id", id));
     }
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create/{id}", method = RequestMethod.POST)
     public @ResponseBody Course create(@Valid @NonNull @RequestBody Course course,
                                        @PathVariable(value = "id") Long trainerId){
 

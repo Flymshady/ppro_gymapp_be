@@ -2,6 +2,7 @@ package cz.ppro.gymapp.be.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -19,20 +20,20 @@ public class Course {
     @NotBlank
     private String description;
     @Column(name = "course_price")
-    @NotBlank
+    @NotNull
     private double price;
     @Column(name = "course_max_capacity")
-    @NotBlank
+    @NotNull
     private int maxCapacity;
     @ManyToMany(mappedBy = "signedCourses")
     private List<Account> signedClients;
     @ManyToOne
     private Account trainer;
-    @NotBlank
+    @NotNull
     private Date beginDate;
-
+    @NotNull
     private Date endDate;
-    @NotBlank
+    @NotNull
     private int count;
 
     public Course(@NotBlank String name, @NotBlank String description, @NotBlank double price, @NotBlank int maxCapacity, List<Account> signedClients, Account trainer, @NotBlank Date beginDate, Date endDate, @NotBlank int count) {
