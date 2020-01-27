@@ -80,7 +80,7 @@ public class TicketController {
         Ticket updatedTicket = ticketRepository.save(ticket);
         if(account.getId()!=newAcc.getId()){
             account.getTickets().remove(ticket);
-            newAcc.getTickets().add(ticketDetails);
+            newAcc.getTickets().add(ticket);
             accountRepository.save(account);
             accountRepository.save(newAcc);
         }
