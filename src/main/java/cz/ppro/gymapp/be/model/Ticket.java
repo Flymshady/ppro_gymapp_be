@@ -40,7 +40,7 @@ public class Ticket {
     @ManyToOne
     private TicketType ticketType;
 
-    public Ticket(@NotBlank String name, @NotBlank Date beginDate, @NotBlank Date endDate, @NotBlank boolean valid, @NotBlank Account account, List<Entrance> entrances, TicketType ticketType) {
+    public Ticket(@NotBlank String name, @NotNull Date beginDate, @NotNull Date endDate, @NotBlank boolean valid, @NotBlank Account account, List<Entrance> entrances, TicketType ticketType) {
         this.name = name;
         this.beginDate = beginDate;
         this.endDate = endDate;

@@ -1,14 +1,9 @@
 package cz.ppro.gymapp.be.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -36,17 +31,16 @@ public class Account {
     @Column(name = "account_password")
     @NotBlank
     private String password;
-    @ManyToMany
-    private List<Course> signedCourses;
     @JsonIgnore
     @OneToMany(mappedBy = "trainer")
     private List<Course> createdCourses;
-
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "client")
+    private List<AccountSignedCourse> signedCourses;
     @ManyToOne
     private Role role;
 
-    public Account(String firstName, @NotBlank String lastName, @NotBlank String email, @NotBlank String phoneNumber, List<Ticket> tickets, @NotBlank String login, @NotBlank String password, List<Course> signedCourses, List<Course> createdCourses, Role role) {
+    public Account(String firstName, @NotBlank String lastName, @NotBlank String email, @NotBlank String phoneNumber, List<Ticket> tickets, @NotBlank String login, @NotBlank String password, List<Course> createdCourses, List<AccountSignedCourse> signedCourses, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -54,11 +48,10 @@ public class Account {
         this.tickets = tickets;
         this.login = login;
         this.password = password;
-        this.signedCourses = signedCourses;
         this.createdCourses = createdCourses;
+        this.signedCourses = signedCourses;
         this.role = role;
     }
-
 
     public Account() {
     }
@@ -67,11 +60,11 @@ public class Account {
         return id;
     }
 
-    public List<Course> getSignedCourses() {
+    public List<AccountSignedCourse> getSignedCourses() {
         return signedCourses;
     }
 
-    public void setSignedCourses(List<Course> signedCourses) {
+    public void setSignedCourses(List<AccountSignedCourse> signedCourses) {
         this.signedCourses = signedCourses;
     }
 
