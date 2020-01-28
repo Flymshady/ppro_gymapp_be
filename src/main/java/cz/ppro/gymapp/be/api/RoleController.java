@@ -36,7 +36,7 @@ public class RoleController {
     Role create(@Valid @NonNull @RequestBody Role role){
         if(roleRepository.existsByName(role.getName())){
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Role name already taken");
+                    HttpStatus.BAD_REQUEST, "Název role je již obsazen");
 
         }
         return roleRepository.save(role);

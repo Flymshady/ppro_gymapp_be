@@ -29,6 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
+                .antMatchers("/courses/create/**", "/courses/update/**", "/courses/remove/**", "/courses/allByTrainer").hasRole("TRAINER")
                 .anyRequest().authenticated()
                 .and()
                 //.formLogin().and()
