@@ -109,11 +109,11 @@ public class CourseController {
     }
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public Course update(@PathVariable(value = "id") Long id,
-                       @Valid @RequestBody Course courseDetails){
+                       @Valid @RequestBody Course courseDetails, @RequestAttribute Long trainerId){
         Course course = courseRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Course", "id", id));
         Account trainer = course.getTrainer();
-        Account newTrainer = courseDetails.getTrainer();
+        Account newTrainer = accountRepository.getOne(trainerId);
         course.setName(courseDetails.getName());
         course.setBeginDate(courseDetails.getBeginDate());
         course.setCount(courseDetails.getCount());
