@@ -59,7 +59,7 @@ public class AccountController {
         //account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Username already taken");
+                    HttpStatus.BAD_REQUEST, "Uživatelské jméno je již obsazeno");
         }
         return accountRepository.save(account);
 
@@ -74,7 +74,7 @@ public class AccountController {
 
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Username already taken");
+                    HttpStatus.BAD_REQUEST, "Uživatelské jméno je již obsazeno");
         }
         return accountRepository.save(account);
 
@@ -88,7 +88,7 @@ public class AccountController {
         account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Username already taken");
+                    HttpStatus.BAD_REQUEST, "Uživatelské jméno je již obsazeno");
         }
         return accountRepository.save(account);
     }

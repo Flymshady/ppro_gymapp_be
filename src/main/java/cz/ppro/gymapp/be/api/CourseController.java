@@ -1,18 +1,24 @@
 package cz.ppro.gymapp.be.api;
 
 import cz.ppro.gymapp.be.exception.ResourceNotFoundException;
+import cz.ppro.gymapp.be.exception.UnauthorizedAccessException;
 import cz.ppro.gymapp.be.model.Account;
 import cz.ppro.gymapp.be.model.AccountSignedCourse;
 import cz.ppro.gymapp.be.model.Course;
+import cz.ppro.gymapp.be.model.CustomUserDetails;
 import cz.ppro.gymapp.be.repository.AccountRepository;
 import cz.ppro.gymapp.be.repository.AccountSignedCourseRepository;
 import cz.ppro.gymapp.be.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.tags.Param;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +61,26 @@ public class CourseController {
         trainer.getCreatedCourses().add(course);
         accountRepository.save(trainer);
         return courseRepository.save(course);
+
+    }
+    @RequestMapping(value = "/sign/{id}", method = RequestMethod.POST)
+    public AccountSignedCourse sign (@PathVariable(value = "id") Long courseId, @RequestBody Date date,@AuthenticationPrincipal CustomUserDetails user){
+       Account client = accountRepository.findById(user.getId()).orElseThrow(() -> new UnauthorizedAccessException(user.getUsername()));
+       Course course = courseRepository.findById(courseId).orElseThrow(()->new ResourceNotFoundException("Course", "id", courseId));
+
+       if(course.getAccountSignedCourses().size()<course.getMaxCapacity()){
+           AccountSignedCourse accountSignedCourse = new AccountSignedCourse(date,client, course);
+           client.getSignedCourses().add(accountSignedCourse);
+           accountRepository.save(client);
+           course.getAccountSignedCourses().add(accountSignedCourse);
+           courseRepository.save(course);
+           return accountSignedCourseRepository.save(accountSignedCourse);
+       }else{
+           throw new ResponseStatusException(
+                   HttpStatus.BAD_REQUEST, "Kurz je plně obsazen");
+       }
+
+
 
     }
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
