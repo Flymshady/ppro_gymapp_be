@@ -1,5 +1,6 @@
 package cz.ppro.gymapp.be.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -33,9 +34,11 @@ public class Course {
     private List<AccountSignedCourse> accountSignedCourses;
     @NotNull
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
     private Date beginDate;
     @NotNull
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
     private Date endDate;
     @NotNull
     private int count;

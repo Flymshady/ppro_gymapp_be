@@ -1,5 +1,6 @@
 package cz.ppro.gymapp.be.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -17,6 +18,7 @@ public class AccountSignedCourse {
     @NotNull
     @Column(name = "account_signed_curse_date")
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
     private Date signDate;
     @JsonIgnore
     @ManyToOne
