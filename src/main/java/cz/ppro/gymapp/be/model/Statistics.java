@@ -91,8 +91,8 @@ public class Statistics {
     }
 
     // pocet vstupu za obdobi od do
-    public double getEntrances(Date since, Date to){
-        double count=0;
+    public int getEntrances(Date since, Date to){
+        int count=0;
         for (int i=0; i<account.getTickets().size(); i++)
         {
             for (int j=0; j<account.getTickets().get(i).getEntrances().size(); j++)
