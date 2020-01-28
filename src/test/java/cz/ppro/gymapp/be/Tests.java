@@ -18,26 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class Tests {
 
-    @Test
-    void getTicketCount() {
-        Account account = new Account();
-        List<Ticket> tickets = new ArrayList<Ticket>();
-        Ticket ticket = new Ticket();
-        Ticket ticket2 = new Ticket();
-        Ticket ticket3 = new Ticket();
-        tickets.add(ticket);
-        tickets.add(ticket2);
-        tickets.add(ticket3);
-        account.setTickets(tickets);
-        int count=0;
-        for (int i=0; i<account.getTickets().size(); i++)
-        {
-            count++;
-        }
-
-        assertEquals(3, count);
-    }
-
     // Klient si zakoupil za dobu co chodi do posilovny celkem 3 permanentky. Kazda z nich stala ruznou cenu (100,200,300)
     // a zaroven byla zakoupena v jinem mesici. Soucet utracenych penez za permanentky za posledni mesic
     // by se mel rovnat 100kc (kriteriim vyhovuje pouze jedna permice)
@@ -92,10 +72,6 @@ class Tests {
         assertEquals(100, count);
     }
 
-    @Test
-    void getPurchasesCount() {
-    }
-
     // Klient si prihlasil celkem dva kurzy, na prvni se prihlasil a v minulosti ho i navstivil, na druhy
     // se sice prihlasil, ale jeste ho nenavstivil (pro test je zvolen kurz konajici se za 2 mesice)
     //  pocet navstivenych kurzu by tedy mel byt roven 1
@@ -141,7 +117,54 @@ class Tests {
         assertEquals(1, count);
     }
 
+    // Soucet vytvorenych kurzu pomoci daneho accountu v minulosti.
+    // Soucet by mel byt roven 2
     @Test
     void getCoursesCreated() {
+        int count=0;
+        Account account = new Account();
+        Date currentDate = new Date();
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTime(currentDate);
+        List<Course> courses = new ArrayList<Course>();
+        Course course = new Course();
+        Course course2 = new Course();
+        calendar1.add(Calendar.MONTH, -3);
+        Date anotherDate = calendar1.getTime();
+        calendar1.setTime(currentDate);
+        calendar1.add(Calendar.MONTH, -2);
+        Date anotherDate2 = calendar1.getTime();
+        course.setBeginDate(anotherDate);
+        course2.setBeginDate(anotherDate2);
+        courses.add(course);
+        courses.add(course2);
+        account.setCreatedCourses(courses);
+        for (int i=0; i<account.getCreatedCourses().size(); i++)
+        {
+            count++;
+        }
+        assertEquals(2, count);
+    }
+
+    // Soucet vsech permanentek vlastnenych urcitym accountem
+    // Soucet by se mel rovnat 3
+    @Test
+    void getTicketCount() {
+        Account account = new Account();
+        List<Ticket> tickets = new ArrayList<Ticket>();
+        Ticket ticket = new Ticket();
+        Ticket ticket2 = new Ticket();
+        Ticket ticket3 = new Ticket();
+        tickets.add(ticket);
+        tickets.add(ticket2);
+        tickets.add(ticket3);
+        account.setTickets(tickets);
+        int count=0;
+        for (int i=0; i<account.getTickets().size(); i++)
+        {
+            count++;
+        }
+
+        assertEquals(3, count);
     }
 }
