@@ -17,8 +17,8 @@ public class AccountSignedCourse {
     private Long id;
     @NotNull
     @Column(name = "account_signed_curse_date")
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
     private Date signDate;
     @JsonIgnore
     @ManyToOne
