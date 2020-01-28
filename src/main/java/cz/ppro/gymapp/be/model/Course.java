@@ -1,5 +1,7 @@
 package cz.ppro.gymapp.be.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -30,8 +32,10 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private List<AccountSignedCourse> accountSignedCourses;
     @NotNull
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date beginDate;
     @NotNull
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date endDate;
     @NotNull
     private int count;

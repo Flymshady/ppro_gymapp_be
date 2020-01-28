@@ -1,5 +1,7 @@
 package cz.ppro.gymapp.be.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,9 +15,11 @@ public class Entrance {
     @Column(name = "account_id")
     private Long id;
     @Column(name = "ticket_begin_date")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date beginDate;
     @NotNull
     @Column(name = "ticket_end_date")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date endDate;
     @ManyToOne
     private Ticket ticket;
