@@ -1,5 +1,8 @@
 package cz.ppro.gymapp.be.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -13,10 +16,13 @@ public class AccountSignedCourse {
     private Long id;
     @NotNull
     @Column(name = "account_signed_curse_date")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date signDate;
+    @JsonIgnore
     @ManyToOne
     private Account client;
     @ManyToOne
+    @JsonIgnore
     private Course course;
 
     public AccountSignedCourse(@NotNull Date signDate, Account client, Course course) {
