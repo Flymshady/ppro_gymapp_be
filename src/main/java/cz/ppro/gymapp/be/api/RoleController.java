@@ -61,9 +61,7 @@ public class RoleController {
 
         Role role = roleRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Role", "id", id));
         role.setName(roleDetails.getName());
-        role.setAccounts(role.getAccounts());
         Role updatedRole =  roleRepository.save(role);
-
         return  updatedRole;
     }
 
