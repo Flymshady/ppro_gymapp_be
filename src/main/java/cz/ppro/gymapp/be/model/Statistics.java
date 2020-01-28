@@ -69,7 +69,7 @@ public class Statistics {
     }
 
     // pocet navstivenych kurzu od pocatku veku
-    public int getCoursesVisited(){
+    /*public int getCoursesVisited(){
         int count=0;
         Date date = new Date();
         for (int i=0; i<account.getSignedCourses().size(); i++)
@@ -79,7 +79,7 @@ public class Statistics {
             }
         }
         return count;
-    }
+    }*/
     // pocet vytvorenych kurzu od pocatku veku
     public int getCoursesCreated(){
         int count=0;

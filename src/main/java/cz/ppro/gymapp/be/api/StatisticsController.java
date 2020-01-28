@@ -53,14 +53,14 @@ public class StatisticsController {
         Statistics statistics = new Statistics(account);
         return  statistics.getPurchasesCount();
     }
-    @RequestMapping(value = "/coursesvisited/{id}", method = RequestMethod.GET)
-    public int getCoursesVisited(@PathVariable(value = "id") Long id,
+    //@RequestMapping(value = "/coursesvisited/{id}", method = RequestMethod.GET)
+    /*public int getCoursesVisited(@PathVariable(value = "id") Long id,
                                  @Valid @RequestBody Account accountDetails){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         Statistics statistics = new Statistics(account);
         return  statistics.getCoursesVisited();
-    }
+    }*/
     @RequestMapping(value = "/coursescreated/{id}", method = RequestMethod.GET)
     public int getCoursesCreated(@PathVariable(value = "id") Long id,
                                  @Valid @RequestBody Account accountDetails){
