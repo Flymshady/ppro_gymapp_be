@@ -68,16 +68,23 @@ public class CourseController {
        Account client = accountRepository.findById(user.getId()).orElseThrow(() -> new UnauthorizedAccessException(user.getUsername()));
        Course course = courseRepository.findById(courseId).orElseThrow(()->new ResourceNotFoundException("Course", "id", courseId));
 
-       if(course.getAccountSignedCourses().size()<course.getMaxCapacity()){
-           AccountSignedCourse accountSignedCourse = new AccountSignedCourse(date,client, course);
-           client.getSignedCourses().add(accountSignedCourse);
-           accountRepository.save(client);
-           course.getAccountSignedCourses().add(accountSignedCourse);
-           courseRepository.save(course);
-           return accountSignedCourseRepository.save(accountSignedCourse);
-       }else{
+       if(accountSignedCourseRepository.getAccountSignedCourseByClientAndAndCourse(client, course)==null) {
+           if (course.getAccountSignedCourses().size() < course.getMaxCapacity()) {
+
+               AccountSignedCourse accountSignedCourse = new AccountSignedCourse(date, client, course);
+
+               client.getSignedCourses().add(accountSignedCourse);
+               accountRepository.save(client);
+               course.getAccountSignedCourses().add(accountSignedCourse);
+               courseRepository.save(course);
+               return accountSignedCourseRepository.save(accountSignedCourse);
+           } else {
+               throw new ResponseStatusException(
+                       HttpStatus.BAD_REQUEST, "Kurz je plně obsazen");
+           }
+       }else {
            throw new ResponseStatusException(
-                   HttpStatus.BAD_REQUEST, "Kurz je plně obsazen");
+                   HttpStatus.BAD_REQUEST, "Uživatel je již na tento kurz registrovaný");
        }
 
 

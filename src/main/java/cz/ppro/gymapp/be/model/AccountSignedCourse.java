@@ -1,5 +1,7 @@
 package cz.ppro.gymapp.be.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -14,9 +16,11 @@ public class AccountSignedCourse {
     @NotNull
     @Column(name = "account_signed_curse_date")
     private Date signDate;
+    @JsonIgnore
     @ManyToOne
     private Account client;
     @ManyToOne
+    @JsonIgnore
     private Course course;
 
     public AccountSignedCourse(@NotNull Date signDate, Account client, Course course) {
