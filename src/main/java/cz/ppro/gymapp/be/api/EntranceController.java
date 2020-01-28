@@ -50,7 +50,7 @@ public class EntranceController {
         Ticket ticket = ticketRepository.getOne(ticketId);
         if(ticket==null) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Provide correct Ticket Id");
+                    HttpStatus.BAD_REQUEST, "Nebylo poskytnuto správné id tiketu");
         }
         if(ticket.isValid()){
             if(ticket.getEntrances().size()<ticket.getTicketType().getEntrancesTotal()){
@@ -61,7 +61,7 @@ public class EntranceController {
         }
         //asi doplnit aby to hazelo chybu ze je permice neplatna nebo uz ma plny vstupy
         throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST, "Invalid ticket");
+                HttpStatus.BAD_REQUEST, "Neplatný tiket");
 
 
 
