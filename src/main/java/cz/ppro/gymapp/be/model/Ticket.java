@@ -1,5 +1,6 @@
 package cz.ppro.gymapp.be.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,10 +24,12 @@ public class Ticket {
     @NotNull
     @Column(name = "ticket_begin_date")
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
     private Date beginDate;
     @NotNull
     @Column(name = "ticket_end_date")
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
     private Date endDate;
 
     @Column(name = "ticket_valid")
