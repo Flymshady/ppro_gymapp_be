@@ -52,6 +52,8 @@ public class CourseController {
         Account trainer = accountRepository.findById(trainerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", trainerId));
         course.setTrainer(trainer);
+        trainer.getCreatedCourses().add(course);
+        accountRepository.save(trainer);
         return courseRepository.save(course);
 
     }
@@ -77,6 +79,8 @@ public class CourseController {
                        @Valid @RequestBody Course courseDetails){
         Course course = courseRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Course", "id", id));
+        Account trainer = course.getTrainer();
+        Account newTrainer = courseDetails.getTrainer();
         course.setName(courseDetails.getName());
         course.setBeginDate(courseDetails.getBeginDate());
         course.setCount(courseDetails.getCount());
@@ -85,6 +89,12 @@ public class CourseController {
         course.setMaxCapacity(courseDetails.getMaxCapacity());
         course.setPrice(courseDetails.getPrice());
         Course updatedCourse = courseRepository.save(course);
+        if(trainer.getId()!=newTrainer.getId()){
+            trainer.getCreatedCourses().remove(course);
+            newTrainer.getCreatedCourses().add(course);
+            accountRepository.save(trainer);
+            accountRepository.save(newTrainer);
+        }
         return updatedCourse;
     }
 

@@ -36,7 +36,7 @@ public class RoleController {
     Role create(@Valid @NonNull @RequestBody Role role){
         if(roleRepository.existsByName(role.getName())){
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Provide correct Actor Id");
+                    HttpStatus.BAD_REQUEST, "Role name already taken");
 
         }
         return roleRepository.save(role);

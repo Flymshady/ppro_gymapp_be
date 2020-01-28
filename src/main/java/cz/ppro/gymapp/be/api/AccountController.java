@@ -103,7 +103,7 @@ public class AccountController {
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public Account update(@PathVariable(value = "id") Long id,
-                         @Valid @RequestBody Account accountDetails){
+                          @Valid @RequestBody Account accountDetails){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
 
@@ -119,46 +119,5 @@ public class AccountController {
         Account updatedAccount = accountRepository.save(account);
         return updatedAccount;
     }
-/*
-    @RequestMapping(value = "/ticketcount/{id}", method = RequestMethod.GET)
-    public int getTicketCount(@PathVariable(value = "id") Long id,
-                              @Valid @RequestBody Account accountDetails){
-        Account account = accountRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
-        return  account.getTicketCount();
-    }
-
-    @RequestMapping(value = "/purchasesprice/{id}", method = RequestMethod.GET)
-    public double getPurchasesPrice(@PathVariable(value = "id") Long id,
-                                    @Valid @RequestBody Account accountDetails){
-        Account account = accountRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
-        return  account.getPurchasesPrice();
-    }
-    @RequestMapping(value = "/purchasescount/{id}", method = RequestMethod.GET)
-    public int getPurchasesCount(@PathVariable(value = "id") Long id,
-                                 @Valid @RequestBody Account accountDetails){
-        Account account = accountRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
-        return  account.getPurchasesCount();
-    }
-
-    @RequestMapping(value = "/coursesvisited/{id}", method = RequestMethod.GET)
-    public int getCoursesVisited(@PathVariable(value = "id") Long id,
-                                 @Valid @RequestBody Account accountDetails){
-        Account account = accountRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
-        return  account.getCoursesVisited();
-    }
-
-
-    @RequestMapping(value = "/coursescreated/{id}", method = RequestMethod.GET)
-    public int getCoursesCreated(@PathVariable(value = "id") Long id,
-                                 @Valid @RequestBody Account accountDetails){
-        Account account = accountRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
-        return  account.getCoursesCreated();
-    }
-    */
 
 }
