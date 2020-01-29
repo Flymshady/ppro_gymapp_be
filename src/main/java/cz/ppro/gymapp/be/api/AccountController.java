@@ -44,6 +44,10 @@ public class AccountController {
     public List<Account> getTrainers(){
         return accountRepository.findAllTrainers();
     }
+    @RequestMapping(value = "/all/clients", method = RequestMethod.GET)
+    public List<Account> getClients(){
+        return accountRepository.findAllByRoleName("Client");
+    }
 
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     public Account getById(@PathVariable(value = "id") Long id){
