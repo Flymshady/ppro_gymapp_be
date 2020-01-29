@@ -46,7 +46,7 @@ public class EntranceController {
 
     @RequestMapping(value = "/create/{ticketId}", method = RequestMethod.POST)
     public @ResponseBody
-    Entrance create(@Valid @NonNull @RequestBody Entrance entrance, @PathVariable(value = "id") Long ticketId){
+    Entrance create(@Valid @NonNull @RequestBody Entrance entrance, @PathVariable(value = "ticketId") Long ticketId){
         Ticket ticket = ticketRepository.getOne(ticketId);
         if(ticket==null) {
             throw new ResponseStatusException(
