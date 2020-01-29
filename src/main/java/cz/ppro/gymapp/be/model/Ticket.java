@@ -18,9 +18,6 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ticket_id")
     private Long id;
-    @NotBlank
-    @Column(name = "ticket_name")
-    private String name;
     @NotNull
     @Column(name = "ticket_begin_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
@@ -33,12 +30,11 @@ public class Ticket {
     private Date endDate;
 
     @Column(name = "ticket_valid")
-    @NotBlank
     private boolean valid;
     @ManyToOne
 
     //TODO pridat notblank anot - pryc z duvodu testovani
-    @JsonIgnore
+
     private Account account;
 
     @OneToMany(mappedBy = "ticket")
@@ -46,8 +42,7 @@ public class Ticket {
     @ManyToOne
     private TicketType ticketType;
 
-    public Ticket(@NotBlank String name, @NotNull Date beginDate, @NotNull Date endDate, @NotBlank boolean valid, @NotBlank Account account, List<Entrance> entrances, TicketType ticketType) {
-        this.name = name;
+    public Ticket(@NotNull Date beginDate, @NotNull Date endDate, boolean valid, Account account, List<Entrance> entrances, TicketType ticketType) {
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.valid = valid;
@@ -78,14 +73,6 @@ public class Ticket {
         return id;
     }
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Date getBeginDate() {
         return beginDate;

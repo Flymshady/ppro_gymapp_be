@@ -4,9 +4,11 @@ import cz.ppro.gymapp.be.exception.ResourceNotFoundException;
 import cz.ppro.gymapp.be.model.Account;
 import cz.ppro.gymapp.be.model.Entrance;
 import cz.ppro.gymapp.be.model.Ticket;
+import cz.ppro.gymapp.be.model.TicketType;
 import cz.ppro.gymapp.be.repository.AccountRepository;
 import cz.ppro.gymapp.be.repository.EntranceRepository;
 import cz.ppro.gymapp.be.repository.TicketRepository;
+import cz.ppro.gymapp.be.repository.TicketTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +24,14 @@ public class TicketController {
     private EntranceRepository entranceRepository;
     private AccountRepository accountRepository;
     private TicketRepository ticketRepository;
+    private TicketTypeRepository ticketTypeRepository;
 
     @Autowired
-    public TicketController(AccountRepository accountRepository, TicketRepository ticketRepository, EntranceRepository entranceRepository) {
+    public TicketController(AccountRepository accountRepository, TicketRepository ticketRepository, EntranceRepository entranceRepository, TicketTypeRepository ticketTypeRepository) {
         this.accountRepository = accountRepository;
         this.ticketRepository = ticketRepository;
         this.entranceRepository=entranceRepository;
+        this.ticketTypeRepository=ticketTypeRepository;
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
@@ -44,9 +48,14 @@ public class TicketController {
     public Ticket getById(@PathVariable(value = "id") Long id){
         return ticketRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Ticket", "id", id));
     }
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create/{accountId}/{ticketTypeId}", method = RequestMethod.POST)
     public @ResponseBody
-    Ticket create(@Valid @NonNull @RequestBody Ticket ticket){
+    Ticket create(@Valid @NonNull @RequestBody Ticket ticket, @PathVariable(value = "accountId") Long accountId, @PathVariable(value = "ticketTypeId") Long ticketTypeId){
+        Account client = accountRepository.findById(accountId).orElseThrow(()->new ResourceNotFoundException("Account", "id", accountId));
+        TicketType ticketType = ticketTypeRepository.findById(ticketTypeId).orElseThrow(()->new ResourceNotFoundException("TicketType", "id", ticketTypeId));
+        ticket.setTicketType(ticketType);
+        ticket.setAccount(client);
+        ticket.setValid(true);
         return ticketRepository.save(ticket);
 
     }
@@ -73,7 +82,6 @@ public class TicketController {
         Account newAcc = ticketDetails.getAccount();
         ticket.setBeginDate(ticketDetails.getBeginDate());
         ticket.setEndDate(ticketDetails.getEndDate());
-        ticket.setName(ticketDetails.getName());
         ticket.setValid(ticketDetails.isValid());
         ticket.setTicketType(ticketDetails.getTicketType());
         ticket.setEntrances(ticketDetails.getEntrances());

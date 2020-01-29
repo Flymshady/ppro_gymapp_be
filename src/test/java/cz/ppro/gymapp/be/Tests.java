@@ -46,9 +46,9 @@ class Tests {
         TicketType ticketType = new TicketType();
         TicketType ticketType2 = new TicketType();
         TicketType ticketType3 = new TicketType();
-        ticketType.setType(TicketType.Type.FITNESS);
-        ticketType2.setType(TicketType.Type.FITNESS);
-        ticketType3.setType(TicketType.Type.FITNESS);
+        ticketType.setName("Fitness");
+        ticketType2.setName("Fitness");
+        ticketType3.setName("Fitness");
         ticket.setTicketType(ticketType);
         ticket2.setTicketType(ticketType2);
         ticket3.setTicketType(ticketType3);
