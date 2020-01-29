@@ -109,25 +109,24 @@ public class CourseController {
     }
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public Course update(@PathVariable(value = "id") Long id,
-                       @Valid @RequestBody Course courseDetails, @RequestAttribute Long trainerId){
+                       @Valid @RequestBody Course courseDetails){
         Course course = courseRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Course", "id", id));
-        Account trainer = course.getTrainer();
-        Account newTrainer = accountRepository.getOne(trainerId);
+        int currentCapacity = course.getAccountSignedCourses().size();
+
         course.setName(courseDetails.getName());
         course.setBeginDate(courseDetails.getBeginDate());
         course.setCount(courseDetails.getCount());
         course.setDescription(courseDetails.getDescription());
         course.setEndDate(courseDetails.getEndDate());
-        course.setMaxCapacity(courseDetails.getMaxCapacity());
         course.setPrice(courseDetails.getPrice());
-        Course updatedCourse = courseRepository.save(course);
-        if(trainer.getId()!=newTrainer.getId()){
-            trainer.getCreatedCourses().remove(course);
-            newTrainer.getCreatedCourses().add(course);
-            accountRepository.save(trainer);
-            accountRepository.save(newTrainer);
+        course.setTrainer(courseDetails.getTrainer());
+        if(currentCapacity>courseDetails.getMaxCapacity()){
+            course.setMaxCapacity(course.getAccountSignedCourses().size());
+        }else{
+            course.setMaxCapacity(courseDetails.getMaxCapacity());
         }
+        Course updatedCourse = courseRepository.save(course);
         return updatedCourse;
     }
 

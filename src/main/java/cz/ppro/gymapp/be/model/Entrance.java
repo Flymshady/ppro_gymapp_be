@@ -16,13 +16,13 @@ public class Entrance {
     @Column(name = "account_id")
     private Long id;
     @Column(name = "ticket_begin_date")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
     private Date beginDate;
     @NotNull
     @Column(name = "ticket_end_date")
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
     private Date endDate;
     @ManyToOne
     private Ticket ticket;
