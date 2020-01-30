@@ -80,14 +80,19 @@ public class CourseController {
 
        if(accountSignedCourseRepository.getAccountSignedCourseByClientAndAndCourse(client, course)==null) {
            if (course.getAccountSignedCourses().size() < course.getMaxCapacity()) {
+               if(date.before(course.getBeginDate())) {
 
-               AccountSignedCourse accountSignedCourse = new AccountSignedCourse(date, client, course);
+                   AccountSignedCourse accountSignedCourse = new AccountSignedCourse(date, client, course);
 
-               client.getSignedCourses().add(accountSignedCourse);
-               accountRepository.save(client);
-               course.getAccountSignedCourses().add(accountSignedCourse);
-               courseRepository.save(course);
-               return accountSignedCourseRepository.save(accountSignedCourse);
+                   client.getSignedCourses().add(accountSignedCourse);
+                   accountRepository.save(client);
+                   course.getAccountSignedCourses().add(accountSignedCourse);
+                   courseRepository.save(course);
+                   return accountSignedCourseRepository.save(accountSignedCourse);
+               }else{
+                   throw new ResponseStatusException(
+                           HttpStatus.BAD_REQUEST, "Doba možná pro zapsání kurzu již uplynula");
+               }
            } else {
                throw new ResponseStatusException(
                        HttpStatus.BAD_REQUEST, "Kurz je plně obsazen");
@@ -96,10 +101,30 @@ public class CourseController {
            throw new ResponseStatusException(
                    HttpStatus.BAD_REQUEST, "Uživatel je již na tento kurz registrovaný");
        }
-
-
-
     }
+
+    @RequestMapping(value = "/signout/{id}", method = RequestMethod.POST)
+    public void signout (@PathVariable(value = "id") Long courseId, @RequestBody Date date, @AuthenticationPrincipal CustomUserDetails user){
+        Account client = accountRepository.findById(user.getId()).orElseThrow(() -> new UnauthorizedAccessException(user.getUsername()));
+        Course course = courseRepository.findById(courseId).orElseThrow(()->new ResourceNotFoundException("Course", "id", courseId));
+        if(accountSignedCourseRepository.getAccountSignedCourseByClientAndAndCourse(client, course)!=null){
+            if(date.before(course.getBeginDate())) {
+                AccountSignedCourse accountSignedCourse = accountSignedCourseRepository.getAccountSignedCourseByClientAndAndCourse(client, course);
+                client.getSignedCourses().remove(accountSignedCourse);
+                course.getAccountSignedCourses().remove(accountSignedCourse);
+                accountRepository.save(client);
+                courseRepository.save(course);
+                accountSignedCourseRepository.delete(accountSignedCourse);
+            }else {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "Doba možná pro odepsání z kurzu již uplynula");
+            }
+        }else{
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Uživatel není na tomto kurzu registrovaný");
+        }
+    }
+
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
     public void remove(@PathVariable(value = "id") Long id){
         Course course = courseRepository.findById(id)
