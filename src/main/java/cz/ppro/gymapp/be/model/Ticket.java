@@ -32,9 +32,6 @@ public class Ticket {
     @Column(name = "ticket_valid")
     private boolean valid;
     @ManyToOne
-
-    //TODO pridat notblank anot - pryc z duvodu testovani
-
     private Account account;
 
     @OneToMany(mappedBy = "ticket")
