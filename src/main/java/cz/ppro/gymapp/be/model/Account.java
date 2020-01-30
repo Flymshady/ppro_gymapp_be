@@ -13,6 +13,8 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "account_id")
     private Long id;
+    @Column(name = "account_first_name")
+    @NotBlank
     private String firstName;
     @Column(name = "account_last_name")
     @NotBlank
@@ -41,7 +43,7 @@ public class Account {
     @ManyToOne
     private Role role;
 
-    public Account(String firstName, @NotBlank String lastName, @NotBlank String email, @NotBlank String phoneNumber, List<Ticket> tickets, @NotBlank String login, @NotBlank String password, List<Course> createdCourses, List<AccountSignedCourse> signedCourses, Role role) {
+    public Account(@NotBlank String firstName, @NotBlank String lastName, @NotBlank String email, @NotBlank String phoneNumber, List<Ticket> tickets, @NotBlank String login, @NotBlank String password, List<Course> createdCourses, List<AccountSignedCourse> signedCourses, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
