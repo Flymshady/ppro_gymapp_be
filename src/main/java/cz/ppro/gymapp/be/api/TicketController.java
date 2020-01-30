@@ -65,6 +65,7 @@ public class TicketController {
 
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     public Ticket getById(@PathVariable(value = "id") Long id){
+        validate(id);
         return ticketRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Ticket", "id", id));
     }
     @RequestMapping(value = "/create/{accountId}/{ticketTypeId}", method = RequestMethod.POST)
