@@ -27,8 +27,8 @@ public class AccountSignedCourseController {
         this.accountSignedCourseRepository=accountSignedCourseRepository;
     }
 
-    @RequestMapping(value = "/allByClient", method = RequestMethod.GET)
-    public List<AccountSignedCourse> getAllByClient(@RequestAttribute String clientLogin){
+    @RequestMapping(value = "/allByClient/{clientLogin}", method = RequestMethod.GET)
+    public List<AccountSignedCourse> getAllByClient(@PathVariable(value = "clientLogin") String clientLogin){
         return accountSignedCourseRepository.findAllByClientLogin(clientLogin);
     }
 }

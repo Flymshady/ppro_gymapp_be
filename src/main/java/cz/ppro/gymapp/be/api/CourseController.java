@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.tags.Param;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,15 @@ public class CourseController {
     @RequestMapping(value = "/allByTrainer", method = RequestMethod.GET)
     public List<Course> getAllByTrainer(@RequestAttribute String trainerLogin){
         return courseRepository.findAllByTrainerLogin(trainerLogin);
+    }
+    @RequestMapping(value = "/allByClient/{clientLogin}", method = RequestMethod.GET)
+    public List<Course> getAllByClient(@PathVariable(value = "clientLogin") String clientLogin){
+        List<AccountSignedCourse> accountSignedCourses = accountSignedCourseRepository.findAllByClientLogin(clientLogin);
+        List<Course> courses = new ArrayList<>();
+        for ( AccountSignedCourse acs : accountSignedCourses){
+            courses.add(acs.getCourse());
+        }
+        return courses;
     }
 
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
