@@ -11,6 +11,7 @@ import cz.ppro.gymapp.be.repository.TicketRepository;
 import cz.ppro.gymapp.be.repository.TicketTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -35,17 +36,19 @@ public class TicketController {
         this.entranceRepository=entranceRepository;
         this.ticketTypeRepository=ticketTypeRepository;
     }
-
+    @Secured({ "ROLE_Client", "ROLE_Employee" })
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Ticket> getAll(){
         return ticketRepository.findAll();
     }
 
+    @Secured({ "ROLE_Client", "ROLE_Employee" })
     @RequestMapping(value ="/account/{id}/all", method = RequestMethod.GET)
     public List<Ticket> getAllByAccount(@PathVariable(value = "id") Long accountId){
         return ticketRepository.findAllByAccount_Id(accountId);
     }
 
+    @Secured({ "ROLE_Client", "ROLE_Employee" })
     @RequestMapping(value = "/validCheck/{id}", method = RequestMethod.GET)
     public boolean validate(@PathVariable(value = "id") Long id){
         Ticket ticket = ticketRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Ticket", "id", id));
@@ -62,7 +65,7 @@ public class TicketController {
         return false;
     }
 
-
+    @Secured({ "ROLE_Client", "ROLE_Employee" })
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     public Ticket getById(@PathVariable(value = "id") Long id){
         validate(id);

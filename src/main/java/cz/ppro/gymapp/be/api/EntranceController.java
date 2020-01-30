@@ -9,6 +9,7 @@ import cz.ppro.gymapp.be.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,14 +32,14 @@ public class EntranceController {
         this.ticketRepository = ticketRepository;
         this.accountRepository = accountRepository;
     }
-
+    @Secured({ "ROLE_Client", "ROLE_Employee" })
     @RequestMapping(value = "/ticket/{id}", method = RequestMethod.GET)
     public List<Entrance> getAllByTicket(@PathVariable(value = "id") Long ticketId){
         Optional<Ticket> ticket = ticketRepository.findById(ticketId);
         return entranceRepository.findByTicket(ticket);
     }
 
-
+    @Secured({ "ROLE_Client", "ROLE_Employee" })
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     public Entrance getById(@PathVariable(value = "id") Long id){
         return entranceRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Entrance", "id", id));
@@ -77,6 +78,7 @@ public class EntranceController {
         ticketRepository.save(ticket);
         entranceRepository.delete(entrance);
     }
+
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public Entrance update(@PathVariable(value = "id") Long id,
                          @Valid @RequestBody Entrance entranceDetails){

@@ -9,6 +9,7 @@ import cz.ppro.gymapp.be.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,16 +36,19 @@ public class AccountController {
         this.roleRepository=roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
+    @Secured({ "ROLE_Admin", "ROLE_Trainer", "ROLE_Employee" })
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Account> getAll(){
         return accountRepository.findAll();
     }
 
+    @Secured({ "ROLE_Admin", "ROLE_Trainer", "ROLE_Employee" })
     @RequestMapping(value = "/all/trainer", method = RequestMethod.GET)
     public List<Account> getTrainers(){
         return accountRepository.findAllTrainers();
     }
+
+    @Secured({ "ROLE_Admin", "ROLE_Trainer", "ROLE_Employee" })
     @RequestMapping(value = "/all/clients", method = RequestMethod.GET)
     public List<Account> getClients(){
         return accountRepository.findAllByRoleName("Client");
