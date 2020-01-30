@@ -34,12 +34,12 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private List<AccountSignedCourse> accountSignedCourses;
     @NotNull
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    //@DateTimeFormat(pattern = "yyyy/MM/dd")
+    //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
     private Date beginDate;
     @NotNull
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    //@DateTimeFormat(pattern = "yyyy/MM/dd")
+    //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
     private Date endDate;
     @NotNull
     private int count;
