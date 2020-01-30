@@ -47,7 +47,7 @@ public class EntranceController {
     @RequestMapping(value = "/create/{ticketId}", method = RequestMethod.POST)
     public @ResponseBody
     Entrance create(@Valid @NonNull @RequestBody Entrance entrance, @PathVariable(value = "ticketId") Long ticketId){
-        Ticket ticket = ticketRepository.getOne(ticketId);
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(()->new ResourceNotFoundException("Ticket", "id", ticketId));
         if(ticket==null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Nebylo poskytnuto správné id tiketu");
@@ -58,10 +58,12 @@ public class EntranceController {
                 ticketRepository.save(ticket);
                 return entranceRepository.save(entrance);
             }
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Všechny vstupy jsou již vybrány");
         }
-        //asi doplnit aby to hazelo chybu ze je permice neplatna nebo uz ma plny vstupy
+
         throw new ResponseStatusException(
-                HttpStatus.BAD_REQUEST, "Neplatný tiket");
+                HttpStatus.BAD_REQUEST, "Neplatná permanentka");
 
 
 

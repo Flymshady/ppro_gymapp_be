@@ -14,6 +14,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin
@@ -43,6 +45,23 @@ public class TicketController {
     public List<Ticket> getAllByAccount(@PathVariable(value = "id") Long accountId){
         return ticketRepository.findAllByAccount_Id(accountId);
     }
+
+    @RequestMapping(value = "/validCheck/{id}", method = RequestMethod.GET)
+    public boolean validate(@PathVariable(value = "id") Long id){
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Ticket", "id", id));
+        Date current = new Date();
+        if(ticket.isValid()){
+            if(ticket.getEntrances().size()<ticket.getTicketType().getEntrancesTotal()){
+             if(ticket.getEndDate().after(current)) {
+                 return true;
+                 }
+             }
+        }
+        ticket.setValid(false);
+        ticketRepository.save(ticket);
+        return false;
+    }
+
 
     @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
     public Ticket getById(@PathVariable(value = "id") Long id){
