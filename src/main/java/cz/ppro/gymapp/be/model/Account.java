@@ -23,6 +23,7 @@ public class Account {
     @Column(name = "account_phone_number")
     @NotBlank
     private String phoneNumber;
+    @JsonIgnore
     @OneToMany(mappedBy = "account")
     private List<Ticket> tickets;
     @Column(name = "account_login")

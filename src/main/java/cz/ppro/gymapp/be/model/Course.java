@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -34,12 +33,12 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private List<AccountSignedCourse> accountSignedCourses;
     @NotNull
-    //@DateTimeFormat(pattern = "yyyy/MM/dd")
-    //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
     private Date beginDate;
     @NotNull
-    //@DateTimeFormat(pattern = "yyyy/MM/dd")
-    //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy/MM/dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
     private Date endDate;
     @NotNull
     private int count;

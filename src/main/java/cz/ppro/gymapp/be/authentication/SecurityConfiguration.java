@@ -32,6 +32,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     protected void configure(AuthenticationManagerBuilder auth)  {
         auth.authenticationProvider(authenticationProvider());
     }
+/***
+    Návod na security conf:
+        hasRole()
+            pro metody CREATE/UOPDATE/DELETE   dát HttpMethod.OPTIONS  .antMatchers(HttpMethod.OPTIONS,"/courses/create/**"
+            pro GET
+        autheticated()
+            ete nevim myslim ze staci bez OPTIONS
+  ***/
 
 
     @Override
@@ -40,10 +48,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .csrf().disable()
                 .authorizeRequests()
               //  .antMatchers("/**").permitAll()
-            //    .antMatchers("/courses/create/**", "/courses/update/**", "/courses/remove/**", "/courses/allByTrainer").hasRole("Trainer")
-                .antMatchers("/demo/hello").hasRole("Trainer")
-                .antMatchers(HttpMethod.OPTIONS,"/demo/auth").authenticated()
-                .antMatchers(HttpMethod.OPTIONS,"/courses/all").hasRole("Trainer")
+                    .antMatchers(HttpMethod.OPTIONS,"/courses/create/**", "/courses/update/**", "/courses/remove/**", "/courses/allByTrainer").hasRole("Trainer")
+              //  .antMatchers("/demo/hello").hasRole("Trainer")
+            //    .antMatchers(HttpMethod.OPTIONS,"/demo/auth").authenticated()
+               // .antMatchers(HttpMethod.OPTIONS,"/courses/all").authenticated()
+            //    .antMatchers("/courses/all").hasRole("Admin")
                 .anyRequest().permitAll()
                 .and()
                 //.formLogin().and()

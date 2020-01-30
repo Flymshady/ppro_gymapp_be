@@ -18,4 +18,6 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
             " WHERE Role.role_name = 'Trainer'"
             , nativeQuery = true)
     List<Account> findAllTrainers();
+
+    List<Account> findAllByRoleName(String roleName);
 }
