@@ -49,6 +49,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .authorizeRequests()
               //  .antMatchers("/**").permitAll()
                     .antMatchers(HttpMethod.OPTIONS,"/courses/create/**", "/courses/update/**", "/courses/remove/**", "/courses/allByTrainer").hasRole("Trainer")
+                .antMatchers(HttpMethod.OPTIONS, "/accounts/update/**").authenticated()
+                .antMatchers(HttpMethod.OPTIONS, "/accounts/create/admin/**").hasRole("Admin")
               //  .antMatchers("/demo/hello").hasRole("Trainer")
             //    .antMatchers(HttpMethod.OPTIONS,"/demo/auth").authenticated()
                // .antMatchers(HttpMethod.OPTIONS,"/courses/all").authenticated()

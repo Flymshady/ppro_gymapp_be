@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RequestMapping("/accounts")
@@ -53,14 +54,16 @@ public class AccountController {
     public Account getById(@PathVariable(value = "id") Long id){
         return accountRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Account", "id", id));
     }
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+
+    //pro vytvoreni uzivatelskeho uctu
+    @RequestMapping(value = "/createClient", method = RequestMethod.POST)
     public @ResponseBody
     Account create(@Valid @NonNull @RequestBody Account account){
 
         String password = passwordEncoder.encode(account.getPassword());
         account.setPassword(password);
-        //Role userRole = roleRepository.findByName('hovno');
-        //account.setRole(userRole);
+        Role userRole = roleRepository.findByName("Client");
+        account.setRole(userRole);
         if(accountRepository.findByLogin(account.getLogin()).isPresent()){
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Uživatelské jméno je již obsazeno");
@@ -68,6 +71,7 @@ public class AccountController {
         return accountRepository.save(account);
 
     }
+    //pro vytvoreni uctu adminem -  pro trenery, zamestnance
     @RequestMapping(value = "/create/admin/{roleName}", method = RequestMethod.POST)
     public @ResponseBody
     Account createAdmin(@Valid @NonNull @RequestBody Account account, @PathVariable(value = "roleName") String roleName){
@@ -83,45 +87,27 @@ public class AccountController {
         return accountRepository.save(account);
 
     }
-    @RequestMapping(value = "/create/employee", method = RequestMethod.POST)
-    public @ResponseBody
-    Account createEmployee(@Valid @NonNull @RequestBody Account account){
-        String password = passwordEncoder.encode(account.getPassword());
-        account.setPassword(password);
-        Role userRole = roleRepository.findByName("Employee");
-        account.setRole(userRole);
-        if(accountRepository.findByLogin(account.getLogin()).isPresent()){
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Uživatelské jméno je již obsazeno");
-        }
-        return accountRepository.save(account);
-    }
 
-    //odstraneni uctu bych snad ani nedelal - musely by se postupne odstranit vsechny jeho zaznamy o ticketech, entrances...
-    /*@RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
-    public void remove(@PathVariable(value = "id") Long id){
-        Account account = accountRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
-        accountRepository.delete(account);
-    }*/
 
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    public Account update(@PathVariable(value = "id") Long id,
+    @RequestMapping(value = "/update/{id}/{auId}", method = RequestMethod.PUT)
+    public Account update(@PathVariable(value = "id") Long id, @PathVariable(value = "auId") Long auId,
                           @Valid @RequestBody Account accountDetails){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
-
-        account.setTickets(accountDetails.getTickets());
-        account.setLogin(accountDetails.getLogin());
-        account.setPassword(accountDetails.getPassword());
+        Account user = accountRepository.findById(auId)
+                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", auId));
+        if((user.getId()==account.getId()) || ((user.getRole().getName()=="Admin") || (user.getRole().getName()=="Trainer") || user.getRole().getName()=="Employee")){
         account.setEmail(accountDetails.getEmail());
         account.setPhoneNumber(accountDetails.getPhoneNumber());
         account.setFirstName(accountDetails.getFirstName());
         account.setLastName(accountDetails.getLastName());
-        account.setCreatedCourses(accountDetails.getCreatedCourses());
-        account.setSignedCourses(accountDetails.getSignedCourses());
         Account updatedAccount = accountRepository.save(account);
         return updatedAccount;
+        }
+        else{
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "Neoprávněný přístup");
+        }
     }
 
 }
