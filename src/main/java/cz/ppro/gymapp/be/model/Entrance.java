@@ -1,6 +1,7 @@
 package cz.ppro.gymapp.be.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -13,21 +14,21 @@ import java.util.Date;
 public class Entrance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "account_id")
+    @Column(name = "entrance_id")
     private Long id;
     @Column(name = "entrance_begin_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
     private Date beginDate;
-    @NotNull
     @Column(name = "entrance_end_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
     private Date endDate;
+    @JsonIgnore
     @ManyToOne
     private Ticket ticket;
 
-    public Entrance(Date beginDate, @NotBlank Date endDate, Ticket ticket) {
+    public Entrance(Date beginDate, Date endDate, Ticket ticket) {
         this.beginDate = beginDate;
         this.endDate = endDate;
         this.ticket = ticket;

@@ -76,6 +76,7 @@ public class EntranceController {
             if(ticket.getEntrances().size()<ticket.getTicketType().getEntrancesTotal()){
                 ticket.getEntrances().add(entrance);
                 ticketRepository.save(ticket);
+                entrance.setTicket(ticket);
                 return entranceRepository.save(entrance);
             }
             throw new ResponseStatusException(
@@ -96,6 +97,17 @@ public class EntranceController {
         ticket.getEntrances().remove(entrance);
         ticketRepository.save(ticket);
         entranceRepository.delete(entrance);
+    }
+
+    @RequestMapping(value = "/updateEndDate/{id}", method = RequestMethod.PUT)
+    public Entrance updateEndDate(@PathVariable(value = "id") Long id,
+                           @Valid @RequestBody Entrance entranceDetails) {
+        Entrance entrance = entranceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Entrance", "id", id));
+        entrance.setEndDate(entranceDetails.getEndDate());
+        entrance.setTicket(entrance.getTicket());
+        Entrance updatedEntrance = entranceRepository.save(entrance);
+        return updatedEntrance;
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
