@@ -24,18 +24,12 @@ package cz.ppro.gymapp.be.api;
 @RequestMapping("/statistics")
 @RestController
 public class StatisticsController {
-    private StatisticsRepository statisticsRepository;
     private AccountRepository accountRepository;
-    private PasswordEncoder passwordEncoder;
-    private RoleRepository roleRepository;
     private EntranceRepository entranceRepository;
 
     @Autowired
-    public StatisticsController(StatisticsRepository statisticsRepository, AccountRepository accountRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, EntranceRepository entranceRepository) {
-        this.statisticsRepository = statisticsRepository;
+    public StatisticsController(AccountRepository accountRepository, EntranceRepository entranceRepository) {
         this.accountRepository = accountRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
         this.entranceRepository = entranceRepository;
     }
 
@@ -86,25 +80,30 @@ public class StatisticsController {
         return  statistics.getCountOfEntrancesOfLastSevenDays();
     }
 
-    @RequestMapping(value = "/getFavouriteDay/{id}", method = RequestMethod.GET)
-    public String getFavouriteDay(@PathVariable(value = "id") Long id){
-        Account account = accountRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
-        Statistics statistics = new Statistics(account);
-        List<Entrance> entrances = new ArrayList<Entrance>();
+    @RequestMapping(value = "/getAverageNumberOFEntrances", method = RequestMethod.GET)
+    public double getAverageNumberOFEntrances(){
+        Statistics statistics = new Statistics();
+        List<Entrance> entrances = new ArrayList<>();
         entrances.addAll(entranceRepository.findAll());
-        return  statistics.getFavouriteDay(entrances);
+        return  statistics.getAverageNumberOFEntrances(entrances);
     }
 
-    @RequestMapping(value = "/getCountOFEndtrances/{id}", method = RequestMethod.GET)
-    public int getCountOFEndtrances(@PathVariable(value = "id") Long id){
-        Account account = accountRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
-        Statistics statistics = new Statistics(account);
-        List<Entrance> entrances = new ArrayList<Entrance>();
+    @RequestMapping(value = "/getFavouriteDay", method = RequestMethod.GET)
+    public List<String> getFavouriteDay(){
+        Statistics statistics = new Statistics();
+        List<Entrance> entrances = new ArrayList<>();
         entrances.addAll(entranceRepository.findAll());
+        List<String> favouriteDay = new ArrayList<>();
+        favouriteDay.add(statistics.getFavouriteDay(entrances));
+        return  favouriteDay;
+    }
 
-        return  statistics.getCountOFEndtrances(entrances);
+    @RequestMapping(value = "/getCountOFEntrances", method = RequestMethod.GET)
+    public int getCountOFEntrances(){
+        Statistics statistics = new Statistics();
+        List<Entrance> entrances = new ArrayList<>();
+        entrances.addAll(entranceRepository.findAll());
+        return  statistics.getCountOFEntrances(entrances);
     }
 
 

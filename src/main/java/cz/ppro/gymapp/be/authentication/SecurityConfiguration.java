@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .antMatchers("/courses/create/**", "/courses/update/**", "/courses/remove/**", "/courses/allByTrainer").hasRole("Trainer")
                 .antMatchers( "/accounts/update/**").authenticated()
                 //to pod tim odkomentovat po vytvoreni roli a admina
-                //        .antMatchers( "/accounts/create/admin/**", "/roles/all", "/roles/detail/**", "/roles/create", "/roles/update/**", "/roles/remove/**").hasRole("Admin")
+                .antMatchers( "/accounts/create/admin/**", "/roles/all", "/roles/detail/**", "/roles/create", "/roles/update/**", "/roles/remove/**").hasRole("Admin")
                 .antMatchers( "/accounts/all/trainer", "/accounts/all/clients", "/accounts/detail/**", "/accounts/update/**", "/accountSignedCourse/allByClient/**").authenticated()
                 .antMatchers( "/courses/allByClient/**", "/entrances/ticket/**", "/entrances/detail/**", "/tickets/all", "/tickets/account/**", "/tickets/validCheck/**", "/tickets/detail/**").authenticated()
                 .antMatchers( "/courses/sign/**", "/courses/signout/**").hasRole("Client")

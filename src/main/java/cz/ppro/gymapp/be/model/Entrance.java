@@ -15,12 +15,12 @@ public class Entrance {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "account_id")
     private Long id;
-    @Column(name = "ticket_begin_date")
+    @Column(name = "entrance_begin_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
     private Date beginDate;
     @NotNull
-    @Column(name = "ticket_end_date")
+    @Column(name = "entrance_end_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm")
     private Date endDate;

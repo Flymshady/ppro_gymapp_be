@@ -143,7 +143,7 @@ public class Statistics {
     }
 
     //celkovy pocet vstupu vsech zakazniku v aktualni den
-    public int getCountOFEndtrances(List<Entrance> entrances){
+    public int getCountOFEntrances(List<Entrance> entrances){
         int count=0;
         Date day = new Date();
         for (int i=0; i<entrances.size(); i++)
@@ -154,6 +154,28 @@ public class Statistics {
 
             }
         return count;
+    }
+
+    //prumerny pocet vstupu za den z udaju za posledni mesic
+    public double getAverageNumberOFEntrances(List<Entrance> entrances){
+        int count=0;
+        Date currentDate = new Date();
+        // convert date to calendar
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        calendar.add(Calendar.MONTH, -1);
+        Date monthAgo = calendar.getTime();
+        double average=0;
+        for (int i=0; i<entrances.size(); i++)
+        {
+            if(entrances.get(i).getBeginDate().after(monthAgo)&&entrances.get(i).getBeginDate().before(currentDate)) {
+                count++;
+                average++;
+            }
+
+        }
+        average = average/count;
+        return average;
     }
 
     // nejoblibenejsi den
