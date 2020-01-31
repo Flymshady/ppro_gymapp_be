@@ -15,13 +15,11 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.tags.Param;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin
 @RequestMapping("/courses")
@@ -61,10 +59,10 @@ public class CourseController {
     public Course getById(@PathVariable(value = "id") Long id){
         return courseRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Course", "id", id));
     }
+
     @RequestMapping(value = "/create/{id}", method = RequestMethod.POST)
     public @ResponseBody Course create(@Valid @NonNull @RequestBody Course course,
                                        @PathVariable(value = "id") Long trainerId){
-
         Account trainer = accountRepository.findById(trainerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", trainerId));
         course.setTrainer(trainer);
