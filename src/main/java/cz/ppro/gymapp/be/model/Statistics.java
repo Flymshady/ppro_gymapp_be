@@ -142,9 +142,10 @@ public class Statistics {
         return count;
     }
 
-    //celkovy pocet vstupu vsech zakazniku v zadany den
-    public int getCountOFEndtrances(List<Entrance> entrances, Date day){
+    //celkovy pocet vstupu vsech zakazniku v aktualni den
+    public int getCountOFEndtrances(List<Entrance> entrances){
         int count=0;
+        Date day = new Date();
         for (int i=0; i<entrances.size(); i++)
         {
             if(entrances.get(i).getBeginDate().equals(day)) {
