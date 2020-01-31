@@ -39,13 +39,22 @@ public class TicketController {
     @Secured({ "ROLE_Client", "ROLE_Employee" })
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Ticket> getAll(){
-        return ticketRepository.findAll();
+        List<Ticket> tickets = ticketRepository.findAll();
+        for (Ticket t : tickets){
+            validate(t.getId());
+        }
+        return tickets;
     }
 
     @Secured({ "ROLE_Client", "ROLE_Employee" })
     @RequestMapping(value ="/account/{id}/all", method = RequestMethod.GET)
     public List<Ticket> getAllByAccount(@PathVariable(value = "id") Long accountId){
-        return ticketRepository.findAllByAccount_Id(accountId);
+        List<Ticket> tickets = ticketRepository.findAllByAccount_Id(accountId);
+        for (Ticket t : tickets){
+            validate(t.getId());
+        }
+
+        return tickets;
     }
 
     @Secured({ "ROLE_Client", "ROLE_Employee" })
@@ -106,6 +115,7 @@ public class TicketController {
         ticket.setBeginDate(ticketDetails.getBeginDate());
         ticket.setEndDate(ticketDetails.getEndDate());
         ticket.setValid(ticketDetails.isValid());
+        validate(ticket.getId());
         ticket.setTicketType(ticketDetails.getTicketType());
         ticket.setEntrances(ticketDetails.getEntrances());
         Ticket updatedTicket = ticketRepository.save(ticket);

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +46,23 @@ public class EntranceController {
         return entranceRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Entrance", "id", id));
     }
 
+    @Secured({ "ROLE_Client", "ROLE_Employee" })
+    @RequestMapping(value = "/validCheck/{id}", method = RequestMethod.GET)
+    public boolean validate(@PathVariable(value = "id") Long id){
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Ticket", "id", id));
+        Date current = new Date();
+        if(ticket.isValid()){
+            if(ticket.getEntrances().size()<ticket.getTicketType().getEntrancesTotal()){
+                if(ticket.getEndDate().after(current)) {
+                    return true;
+                }
+            }
+        }
+        ticket.setValid(false);
+        ticketRepository.save(ticket);
+        return false;
+    }
+
     @RequestMapping(value = "/create/{ticketId}", method = RequestMethod.POST)
     public @ResponseBody
     Entrance create(@Valid @NonNull @RequestBody Entrance entrance, @PathVariable(value = "ticketId") Long ticketId){
@@ -53,6 +71,7 @@ public class EntranceController {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Nebylo poskytnuto správné id tiketu");
         }
+        validate(ticketId);
         if(ticket.isValid()){
             if(ticket.getEntrances().size()<ticket.getTicketType().getEntrancesTotal()){
                 ticket.getEntrances().add(entrance);
