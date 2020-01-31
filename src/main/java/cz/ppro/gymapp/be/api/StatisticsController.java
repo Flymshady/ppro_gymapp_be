@@ -2,9 +2,11 @@ package cz.ppro.gymapp.be.api;
 
         import cz.ppro.gymapp.be.exception.ResourceNotFoundException;
         import cz.ppro.gymapp.be.model.Account;
+        import cz.ppro.gymapp.be.model.Entrance;
         import cz.ppro.gymapp.be.model.Role;
         import cz.ppro.gymapp.be.model.Statistics;
         import cz.ppro.gymapp.be.repository.AccountRepository;
+        import cz.ppro.gymapp.be.repository.EntranceRepository;
         import cz.ppro.gymapp.be.repository.RoleRepository;
         import cz.ppro.gymapp.be.repository.StatisticsRepository;
         import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ package cz.ppro.gymapp.be.api;
         import org.springframework.web.server.ResponseStatusException;
 
         import javax.validation.Valid;
+        import java.util.ArrayList;
         import java.util.List;
 
 @CrossOrigin
@@ -25,6 +28,7 @@ public class StatisticsController {
     private AccountRepository accountRepository;
     private PasswordEncoder passwordEncoder;
     private RoleRepository roleRepository;
+    private EntranceRepository entranceRepository;
 
 
     @RequestMapping(value = "/ticketcount/{id}", method = RequestMethod.GET)
@@ -68,6 +72,38 @@ public class StatisticsController {
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         Statistics statistics = new Statistics(account);
         return  statistics.getCoursesCreated();
+    }
+
+    @RequestMapping(value = "/getCountOfEntrancesOfLastSevenDays/{id}", method = RequestMethod.GET)
+    public int getCountOfEntrancesOfLastSevenDays(@PathVariable(value = "id") Long id,
+                                 @Valid @RequestBody Account accountDetails){
+        Account account = accountRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
+        Statistics statistics = new Statistics(account);
+        return  statistics.getCountOfEntrancesOfLastSevenDays();
+    }
+
+    @RequestMapping(value = "/getFavouriteDay/{id}", method = RequestMethod.GET)
+    public String getFavouriteDay(@PathVariable(value = "id") Long id,
+                                 @Valid @RequestBody Account accountDetails){
+        Account account = accountRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
+        Statistics statistics = new Statistics(account);
+        List<Entrance> entrances = new ArrayList<Entrance>();
+        entrances.addAll(entranceRepository.findAll());
+        return  statistics.getFavouriteDay(entrances);
+    }
+
+    @RequestMapping(value = "/getCountOFEndtrances/{id}", method = RequestMethod.GET)
+    public int getCountOFEndtrances(@PathVariable(value = "id") Long id,
+                                  @Valid @RequestBody Account accountDetails){
+        Account account = accountRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
+        Statistics statistics = new Statistics(account);
+        List<Entrance> entrances = new ArrayList<Entrance>();
+        entrances.addAll(entranceRepository.findAll());
+
+        return  statistics.getCountOFEndtrances(entrances);
     }
 
 
