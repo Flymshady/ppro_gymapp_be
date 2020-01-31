@@ -30,10 +30,17 @@ public class StatisticsController {
     private RoleRepository roleRepository;
     private EntranceRepository entranceRepository;
 
+    @Autowired
+    public StatisticsController(StatisticsRepository statisticsRepository, AccountRepository accountRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, EntranceRepository entranceRepository) {
+        this.statisticsRepository = statisticsRepository;
+        this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+        this.entranceRepository = entranceRepository;
+    }
 
     @RequestMapping(value = "/ticketcount/{id}", method = RequestMethod.GET)
-    public int getTicketCount(@PathVariable(value = "id") Long id,
-                              @Valid @RequestBody Account accountDetails){
+    public int getTicketCount(@PathVariable(value = "id") Long id){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         Statistics statistics = new Statistics(account);
@@ -41,8 +48,7 @@ public class StatisticsController {
     }
 
     @RequestMapping(value = "/purchasesprice/{id}", method = RequestMethod.GET)
-    public double getPurchasesPrice(@PathVariable(value = "id") Long id,
-                                    @Valid @RequestBody Account accountDetails){
+    public double getPurchasesPrice(@PathVariable(value = "id") Long id){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         Statistics statistics = new Statistics(account);
@@ -50,8 +56,7 @@ public class StatisticsController {
     }
 
     @RequestMapping(value = "/purchasescount/{id}", method = RequestMethod.GET)
-    public int getPurchasesCount(@PathVariable(value = "id") Long id,
-                                 @Valid @RequestBody Account accountDetails){
+    public int getPurchasesCount(@PathVariable(value = "id") Long id){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         Statistics statistics = new Statistics(account);
@@ -66,8 +71,7 @@ public class StatisticsController {
         return  statistics.getCoursesVisited();
     }*/
     @RequestMapping(value = "/coursescreated/{id}", method = RequestMethod.GET)
-    public int getCoursesCreated(@PathVariable(value = "id") Long id,
-                                 @Valid @RequestBody Account accountDetails){
+    public int getCoursesCreated(@PathVariable(value = "id") Long id){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         Statistics statistics = new Statistics(account);
@@ -75,8 +79,7 @@ public class StatisticsController {
     }
 
     @RequestMapping(value = "/getCountOfEntrancesOfLastSevenDays/{id}", method = RequestMethod.GET)
-    public int getCountOfEntrancesOfLastSevenDays(@PathVariable(value = "id") Long id,
-                                 @Valid @RequestBody Account accountDetails){
+    public int getCountOfEntrancesOfLastSevenDays(@PathVariable(value = "id") Long id){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         Statistics statistics = new Statistics(account);
@@ -84,8 +87,7 @@ public class StatisticsController {
     }
 
     @RequestMapping(value = "/getFavouriteDay/{id}", method = RequestMethod.GET)
-    public String getFavouriteDay(@PathVariable(value = "id") Long id,
-                                 @Valid @RequestBody Account accountDetails){
+    public String getFavouriteDay(@PathVariable(value = "id") Long id){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         Statistics statistics = new Statistics(account);
@@ -95,8 +97,7 @@ public class StatisticsController {
     }
 
     @RequestMapping(value = "/getCountOFEndtrances/{id}", method = RequestMethod.GET)
-    public int getCountOFEndtrances(@PathVariable(value = "id") Long id,
-                                  @Valid @RequestBody Account accountDetails){
+    public int getCountOFEndtrances(@PathVariable(value = "id") Long id){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         Statistics statistics = new Statistics(account);

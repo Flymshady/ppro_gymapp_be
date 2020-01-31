@@ -17,11 +17,11 @@ public class Statistics {
     private Long id;
     @ManyToOne
     private Account account;
-
     public Statistics(Account account) {
         this.account = account;
     }
 
+    public Statistics() {}
     // pocet permanentek od pocatku veku
     public int getTicketCount(){
         int count=0;
