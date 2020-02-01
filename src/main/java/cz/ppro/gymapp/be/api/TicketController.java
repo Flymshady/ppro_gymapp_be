@@ -11,7 +11,9 @@ import cz.ppro.gymapp.be.repository.TicketRepository;
 import cz.ppro.gymapp.be.repository.TicketTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,22 +41,32 @@ public class TicketController {
     @Secured({ "ROLE_Client", "ROLE_Employee" })
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Ticket> getAll(){
+        validateAll();
         List<Ticket> tickets = ticketRepository.findAll();
-        for (Ticket t : tickets){
-            validate(t.getId());
-        }
         return tickets;
     }
 
     @Secured({ "ROLE_Client", "ROLE_Employee" })
     @RequestMapping(value ="/account/{id}/all", method = RequestMethod.GET)
     public List<Ticket> getAllByAccount(@PathVariable(value = "id") Long accountId){
+        validateAll();
         List<Ticket> tickets = ticketRepository.findAllByAccount_Id(accountId);
-        for (Ticket t : tickets){
-            validate(t.getId());
-        }
-
         return tickets;
+    }
+    @Transactional
+    @Scheduled(fixedRate = 60000)
+    public void validateAll(){
+        List<Ticket> tickets = ticketRepository.findAll();
+        for(Ticket ticket : tickets) {
+            Date current = new Date();
+            if ((ticket.getEntrances().size() < ticket.getTicketType().getEntrancesTotal()) && (ticket.getEndDate().after(current))) {
+                ticket.setValid(true);
+                ticketRepository.save(ticket);
+            }else{
+                ticket.setValid(false);
+                ticketRepository.save(ticket);
+            }
+        }
     }
 
     @Secured({ "ROLE_Client", "ROLE_Employee" })
@@ -62,12 +74,11 @@ public class TicketController {
     public boolean validate(@PathVariable(value = "id") Long id){
         Ticket ticket = ticketRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Ticket", "id", id));
         Date current = new Date();
-        if(ticket.isValid()){
-            if(ticket.getEntrances().size()<ticket.getTicketType().getEntrancesTotal()){
-             if(ticket.getEndDate().after(current)) {
+        if((ticket.getEntrances().size()<ticket.getTicketType().getEntrancesTotal()) && (ticket.getEndDate().after(current))  ){
+                 ticket.setValid(true);
+                 ticketRepository.save(ticket);
                  return true;
-                 }
-             }
+
         }
         ticket.setValid(false);
         ticketRepository.save(ticket);
@@ -87,7 +98,12 @@ public class TicketController {
         TicketType ticketType = ticketTypeRepository.findById(ticketTypeId).orElseThrow(()->new ResourceNotFoundException("TicketType", "id", ticketTypeId));
         ticket.setTicketType(ticketType);
         ticket.setAccount(client);
-        ticket.setValid(true);
+        Date date = new Date();
+        if(date.before(ticket.getEndDate())){
+         ticket.setValid(true);
+        }else{
+            ticket.setValid(false);
+        }
         return ticketRepository.save(ticket);
 
     }
@@ -114,8 +130,12 @@ public class TicketController {
         Account newAcc = ticketDetails.getAccount();
         ticket.setBeginDate(ticketDetails.getBeginDate());
         ticket.setEndDate(ticketDetails.getEndDate());
-        ticket.setValid(ticketDetails.isValid());
-        validate(ticket.getId());
+        Date date = new Date();
+        if(date.before(ticket.getEndDate())){
+            ticket.setValid(true);
+        }else{
+            ticket.setValid(false);
+        }
         ticket.setTicketType(ticketDetails.getTicketType());
         ticket.setEntrances(ticketDetails.getEntrances());
         Ticket updatedTicket = ticketRepository.save(ticket);

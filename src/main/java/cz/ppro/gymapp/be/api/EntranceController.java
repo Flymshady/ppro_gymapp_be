@@ -37,6 +37,7 @@ public class EntranceController {
     @RequestMapping(value = "/ticket/{id}", method = RequestMethod.GET)
     public List<Entrance> getAllByTicket(@PathVariable(value = "id") Long ticketId){
         Optional<Ticket> ticket = ticketRepository.findById(ticketId);
+        validate(ticketId);
         return entranceRepository.findByTicket(ticket);
     }
 
@@ -51,17 +52,17 @@ public class EntranceController {
     public boolean validate(@PathVariable(value = "id") Long id){
         Ticket ticket = ticketRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Ticket", "id", id));
         Date current = new Date();
-        if(ticket.isValid()){
-            if(ticket.getEntrances().size()<ticket.getTicketType().getEntrancesTotal()){
-                if(ticket.getEndDate().after(current)) {
-                    return true;
-                }
-            }
+        if((ticket.getEntrances().size()<ticket.getTicketType().getEntrancesTotal()) && (ticket.getEndDate().after(current))  ){
+            ticket.setValid(true);
+            ticketRepository.save(ticket);
+            return true;
+
         }
         ticket.setValid(false);
         ticketRepository.save(ticket);
         return false;
     }
+
 
     @RequestMapping(value = "/create/{ticketId}", method = RequestMethod.POST)
     public @ResponseBody
