@@ -38,11 +38,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/courses/create/**", "/courses/update/**", "/courses/remove/**", "/courses/allByTrainer").hasRole("Trainer")
-                .antMatchers( "/accounts/update/**").authenticated()
                 //to pod tim odkomentovat po vytvoreni roli a admina
                 .antMatchers( "/accounts/create/admin/**", "/roles/all", "/roles/detail/**", "/roles/create", "/roles/update/**", "/roles/remove/**").hasRole("Admin")
                 .antMatchers( "/accounts/all/trainer", "/accounts/all/clients", "/accounts/detail/**", "/accounts/update/**", "/accountSignedCourse/allByClient/**").authenticated()
-                .antMatchers( "/courses/allByClient/**", "/entrances/ticket/**", "/entrances/detail/**", "/tickets/all", "/tickets/account/**", "/tickets/validCheck/**", "/tickets/detail/**").authenticated()
+                .antMatchers( "/entrances/ticket/**", "/entrances/detail/**", "/tickets/all", "/tickets/account/**", "/tickets/validCheck/**", "/tickets/detail/**").authenticated()
                 .antMatchers( "/courses/sign/**", "/courses/signout/**").hasRole("Client")
                 .antMatchers( "/entrances/create/**", "/entrances/update/**","/entrances/remove/**", "/tickets/create/**", "/tickets/update/all", "/tickets/remove/**", "/ticketTypes/all", "/ticketTypes/detail/**", "/ticketTypes/create", "/ticketTypes/update/**").hasRole("Employee")
                 .antMatchers("/statistics/**").hasRole("Admin")

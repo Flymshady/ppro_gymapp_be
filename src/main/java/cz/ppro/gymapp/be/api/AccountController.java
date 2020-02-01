@@ -100,7 +100,7 @@ public class AccountController {
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", id));
         Account user = accountRepository.findById(auId)
                 .orElseThrow(()-> new ResourceNotFoundException("Account", "id", auId));
-        if((user.getId()==account.getId()) || ((user.getRole().getName()=="Admin") || (user.getRole().getName()=="Trainer") || user.getRole().getName()=="Employee")){
+        if((user.getId()==account.getId()) || ((user.getRole().getName().equals("Admin")) || (user.getRole().getName().equals("Trainer")) || user.getRole().getName().equals("Employee"))){
         account.setEmail(accountDetails.getEmail());
         account.setPhoneNumber(accountDetails.getPhoneNumber());
         account.setFirstName(accountDetails.getFirstName());
