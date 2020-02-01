@@ -146,12 +146,19 @@ public class Statistics {
     public int getCountOFEntrances(List<Entrance> entrances){
         int count=0;
         Date day = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(day);
         for (int i=0; i<entrances.size(); i++)
         {
-            if(entrances.get(i).getBeginDate().equals(day)) {
+            Date entranceDay = entrances.get(i).getBeginDate();
+            Calendar calendar2 = Calendar.getInstance();
+            calendar2.setTime(entranceDay);
+            if(calendar2.get(Calendar.DAY_OF_MONTH)==calendar.get(Calendar.DAY_OF_MONTH)
+                    &&calendar2.get(Calendar.MONTH)==calendar.get(Calendar.MONTH)
+            &&calendar2.get(Calendar.YEAR)==calendar.get(Calendar.YEAR)
+            ) {
                 count++;
             }
-
             }
         return count;
     }
